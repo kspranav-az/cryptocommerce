@@ -3,6 +3,7 @@ import React from "react";
 import MainButton from "./MainButton";
 
 const ProductCard = ({
+  productImage,
   productName,
   productAmountETH,
   productAmountRuppe,
@@ -10,10 +11,7 @@ const ProductCard = ({
   onClick, // Add onClick prop
 }) => {
   return (
-    <div
-      className="min-w-[230px] bg-black opacity-60 rounded-md shadow-md overflow-hidden mx-auto my-4 transition-transform transform hover:scale-105 hover:opacity-80 cursor-pointer"
-      onClick={onClick} // Call the onClick function when clicked
-    >
+    <div className="max-w-[280px] bg-black opacity-40 rounded-md shadow-md overflow-hidden mx-auto my-4 transition-transform transform hover:scale-105 hover:opacity-80">
       {/* Product Image */}
       <div className="p-2">
         <img

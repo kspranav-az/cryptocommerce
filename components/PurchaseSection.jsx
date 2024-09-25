@@ -2,6 +2,66 @@
 import React, { useState } from "react";
 import MainButton from "./MainButton";
 
+const ProductDetails = [
+  {
+    productImage: "/static/img/iphone.jpg",
+    productname: "Iphone",
+    productamounteth: "4.5",
+    productamountruppe: "3000.0",
+    sellername: "RK Traders",
+  },
+  {
+    productImage: "/static/img/samsung buds.jpg",
+    productname: "Samsung Buds",
+    productamounteth: "3.5",
+    productamountruppe: "2500.0",
+    sellername: "KK Brothers",
+  },
+  {
+    productImage: "/static/img/cosmetics1.jpg",
+    productname: "Lipstic",
+    productamounteth: "5.0",
+    productamountruppe: "3500.0",
+    sellername: "Balaji & Co",
+  },
+  {
+    productImage: "/static/img/saree.jpg",
+    productname: "Saree",
+    productamounteth: "6.0",
+    productamountruppe: "4000.0",
+    sellername: "KG Traders",
+  },
+  {
+    productImage: "/static/img/airpods1.jpg",
+    productname: "Airpods",
+    productamounteth: "2.0",
+    productamountruppe: "1500.0",
+    sellername: "Apple.in",
+  },
+  {
+    productImage: "/static/img/perfume1.jpg",
+    productname: "Perfume",
+    productamounteth: "3.0",
+    productamountruppe: "2200.0",
+    sellername: "ab1",
+  },
+  {
+    productImage: "/static/img/shirt1.jpg",
+    productname: "Iphone SE",
+    productamounteth: "2.0",
+    productamountruppe: "1500.0",
+    sellername: "KK Brothers",
+  },
+  {
+    productImage: "/static/img/hoodie1.jpg",
+    productname: "Iphone XR",
+    productamounteth: "3.0",
+    productamountruppe: "2200.0",
+    sellername: "RK Traders",
+  },
+];
+
+function PurchaseSection() {
 const ProductCard = ({
   productName,
   productAmountETH,
@@ -19,44 +79,19 @@ const ProductCard = ({
   };
 
   return (
-    <div>
-      <div
-        className="min-w-[230px] bg-black opacity-60 rounded-md shadow-md overflow-hidden mx-auto my-4 transition-transform transform hover:scale-105 hover:opacity-80"
-        onClick={handleOpenPopup} // Open the popup on click
-      >
-        {/* Product Image */}
-        <div className="p-2">
-          <img
-            className="w-full h-48 object-cover rounded-lg"
-            src="/static/img/iphone.jpg"
-            alt={productName}
+    <section className="mt-6 m-10">
+      <div className="grid grid-cols-5 gap-4">
+        {" "}
+        {/* Adjust columns as needed */}
+        {ProductDetails.map((product, index) => (
+          <ProductCard
+            key={index}
+            productName={product.productname}
+            productAmountETH={product.productamounteth}
+            productAmountRuppe={product.productamountruppe}
+            sellerName={product.sellername}
           />
-        </div>
-
-        {/* Card Content */}
-        <div className="p-4">
-          <h3 className="text-lg font-semibold mb-2">{productName}</h3>
-          <div className="flex justify-between items-center mb-4">
-            <div className="flex items-center">
-              <img
-                className="w-8 h-8 rounded-full mr-2"
-                src="/static/img/Userprofile.png"
-                alt="Seller"
-              />
-              <span className="text-sm text-gray-600">{sellerName}</span>
-            </div>
-            <div className="flex flex-col text-right">
-              <span className="text-xl font-bold text-blue-600">
-                {productAmountETH} ETH
-              </span>
-              <span className="text-white text-sm">${productAmountRuppe}</span>
-            </div>
-          </div>
-
-          <div className="flex justify-center">
-            <MainButton buttonText={"Buy Now"} />
-          </div>
-        </div>
+        ))}
       </div>
 
       {/* Popup */}
