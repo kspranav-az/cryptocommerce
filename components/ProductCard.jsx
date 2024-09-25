@@ -1,54 +1,41 @@
 import React from "react";
+import MainButton from "./MainButton";
 
 const ProductCard = () => {
   return (
-    <div className="max-w-sm w-full bg-black opacity-40 rounded-md shadow-md overflow-hidden mx-auto my-4">
+    <div className="max-w-[300px] bg-black opacity-40 rounded-md shadow-md overflow-hidden mx-auto my-4">
       {/* Product Image */}
       <div className="p-2">
         <img
           className="w-full h-64 object-cover rounded-lg"
-          src="/static/images/cards/paella.jpg"
+          src="/static/img/iphone.jpg"
           alt="Product"
         />
       </div>
 
       {/* Card Content */}
       <div className="p-4">
-        {/* Product Name and Seller Information */}
+        {/* Product Name */}
+        <h3 className="text-lg font-semibold mb-2">Product Name</h3>
+
+        {/* Seller Information and Amount on the same line */}
         <div className="flex justify-between items-center mb-4">
-          <h3 className="text-lg font-semibold">Product Name</h3>
           <div className="flex items-center">
             <img
               className="w-8 h-8 rounded-full mr-2"
-              src="/static/images/seller.jpg"
+              src="/static/img/Userprofile.png"
               alt="Seller"
             />
-            <span className="text-sm text-gray-600">Seller Name</span>
+            <span className="text-sm text-gray-600">Seller Address</span>
           </div>
-        </div>
-
-        {/* Amount */}
-        <div className="flex justify-end mb-4">
           <span className="text-xl font-bold text-blue-600">
-            4.46<span>ETH</span>
+            4.46<span> ETH</span>
           </span>
-          <span className=""></span>
         </div>
 
         {/* Buy Now Button */}
         <div className="flex justify-center">
-          {/* <button className="w-full  text-white py-2 px-4 rounded-lg hover:bg-blue-500">
-            Buy Now
-          </button> */}
-          <div
-            className=" h-10 w-40 border-2 flex items-center justify-center text-2xl"
-            style={{
-              borderImage: "linear-gradient(to right, #775CF0, #42457B) 1",
-              borderRadius: "2rem",
-            }}
-          >
-            Buy Now
-          </div>
+          <MainButton buttonText={"Buy Now"} />
         </div>
       </div>
     </div>
