@@ -2,18 +2,19 @@ import React from "react";
 import MainButton from "./MainButton";
 
 const ProductCard = ({
+  productImage,
   productName,
   productAmountETH,
   productAmountRuppe,
   sellerName,
 }) => {
   return (
-    <div className="max-w-[280px] bg-black opacity-40 rounded-md shadow-md overflow-hidden mx-auto my-4 transition-transform transform hover:scale-105 hover:opacity-80">
+    <div className="max-w-[280px] bg-black  rounded-md shadow-md overflow-hidden mx-auto my-4 transition-transform transform hover:scale-105 hover:opacity-80">
       {/* Product Image */}
       <div className="p-2">
         <img
           className="w-full h-48 object-cover rounded-lg" // Adjusted image height
-          src="/static/img/iphone.jpg" // Update this to dynamically receive product image if needed
+          src={productImage} // Update this to dynamically receive product image if needed
           alt="Product"
         />
       </div>

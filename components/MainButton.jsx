@@ -1,4 +1,9 @@
+'use client'
 import React from "react";
+
+const buyHandler = async () => {
+  console.log("buying....")
+}
 
 const MainButton = ({ buttonText,Href }) => {
   return (
@@ -18,7 +23,8 @@ const MainButton = ({ buttonText,Href }) => {
         position: "relative",
         backdropFilter: "blur(10px)", // Apply background blur behind the button
       }}
-      onClick={"TriggerAction"}
+      onClick={buyHandler}
+
     >
       <div
         style={{
