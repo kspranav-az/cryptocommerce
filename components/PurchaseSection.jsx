@@ -1,5 +1,6 @@
-import React from "react";
-import ProductCard from "./ProductCard";
+"use client";
+import React, { useState } from "react";
+import MainButton from "./MainButton";
 
 const ProductDetails = [
   {
@@ -61,6 +62,22 @@ const ProductDetails = [
 ];
 
 function PurchaseSection() {
+const ProductCard = ({
+  productName,
+  productAmountETH,
+  productAmountRuppe,
+  sellerName,
+}) => {
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const handleOpenPopup = () => {
+    setIsPopupOpen(true);
+  };
+
+  const handleClosePopup = () => {
+    setIsPopupOpen(false);
+  };
+
   return (
     <section className="mt-6 m-10">
       <div className="grid grid-cols-5 gap-4">
@@ -69,7 +86,6 @@ function PurchaseSection() {
         {ProductDetails.map((product, index) => (
           <ProductCard
             key={index}
-            productImage={product.productImage}
             productName={product.productname}
             productAmountETH={product.productamounteth}
             productAmountRuppe={product.productamountruppe}
@@ -77,8 +93,50 @@ function PurchaseSection() {
           />
         ))}
       </div>
-    </section>
-  );
-}
 
-export default PurchaseSection;
+      {/* Popup */}
+      {isPopupOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-md p-4 max-w-md w-full">
+            <h2 className="text-lg font-semibold">{productName}</h2>
+            <img
+              className="w-full h-48 object-cover rounded-lg my-2"
+              src="/static/img/iphone.jpg"
+              alt={productName}
+            />
+            <form className="flex flex-col mt-4">
+              <label className="mb-2">Phone Number:</label>
+              <input
+                type="text"
+                className="border rounded-md p-2 mb-2"
+                placeholder="Enter your phone number"
+              />
+              <label className="mb-2">Address:</label>
+              <input
+                type="text"
+                className="border rounded-md p-2 mb-2"
+                placeholder="Enter your address"
+              />
+              <button
+                type="button"
+                className="bg-blue-600 text-white rounded-md p-2 mt-4"
+                onClick={handleClosePopup}
+              >
+                Selling It
+              </button>
+            </form>
+            <button
+              type="button"
+              className="text-red-500 mt-2"
+              onClick={handleClosePopup}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default ProductCard;
