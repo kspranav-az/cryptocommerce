@@ -25,3 +25,15 @@ body {
     text-wrap: balance;
   }
 }
+
+.btn-gradient {
+  height: 2.5rem; /* Height 10 as per tailwind h-10 */
+  width: 10rem; /* Width 40 as per tailwind w-40 */
+  border-width: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem; /* Text-2xl */
+  border-image: linear-gradient(to right, #775cf0, #42457b) 1;
+  border-radius: 40px;
+}
