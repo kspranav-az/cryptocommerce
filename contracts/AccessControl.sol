@@ -18,6 +18,11 @@ contract AccessControl {
         admin = msg.sender;
     }
 
+    function setAdmin(address newAdmin) public onlyAdmin {
+        require(newAdmin != address(0), "Invalid address");
+        admin = newAdmin;
+    }
+
     // Authorize a user
     function authorizeUser(address user) public onlyAdmin {
         authorizedUsers[user] = true;
