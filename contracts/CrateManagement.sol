@@ -17,13 +17,15 @@ contract CrateManagement is OrderManagement {
     event CrateShipped(uint256 crateId);
 
     // Create a crate for shipping multiple items
-    function createCrate(uint256[] memory productIds, string memory crateRfidTag) public onlyOwner {
+    function createCrate(uint256[] memory productIds, string memory crateRfidTag) public onlyOwner returns ( uint256 ) {
         uint256 crateId = block.timestamp; // Simple crate ID based on timestamp
         Crate memory newCrate = Crate(crateId, productIds, false);
         crateRfid[crateId] = crateRfidTag;
         crates[crateId] = newCrate;
 
         emit CrateCreated(crateId, productIds, crateRfidTag);
+
+        return crateId;
     }
 
     // Ship a crate

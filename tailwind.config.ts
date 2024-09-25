@@ -11,6 +11,8 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        cardbackground: "#000000",
+        navBackground: "#19104A"
       },
     },
   },
