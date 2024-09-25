@@ -28,9 +28,14 @@ const ProductCard = () => {
             />
             <span className="text-sm text-gray-600">Seller Name</span>
           </div>
-          <span className="text-xl font-bold text-blue-600">
-            4.46<span> ETH</span>
-          </span>
+          <div className="flex flex-col flex-center align-items">
+            <span className="text-xl font-bold text-blue-600">
+              4.46<span> ETH</span>
+            </span>
+            <span className="text-white text-sm">
+              $<span>400</span>
+            </span>
+          </div>
         </div>
 
         {/* Buy Now Button */}
