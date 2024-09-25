@@ -30,7 +30,12 @@ export default function Landingpage() {
                         }}>
                     Join us
                     </div> */}
-            <MainButton buttonText={"Join Us"}></MainButton>
+            <Link href={"/User"}>
+            <div className="flex items-center justify-center border-4 p-2 pl-4 pr-4 border-white rounded-2xl hover:bg-[#30207e] text-xl">
+            Join Us!
+            </div>
+              
+            </Link>
           </div>
         </div>
       </section>
