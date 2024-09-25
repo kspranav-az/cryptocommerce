@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "chai": "^4.5.0",
     "@headlessui/react": "^2.1.8",
     "@heroicons/react": "^2.1.5",
     "chai": "^4.2.0",

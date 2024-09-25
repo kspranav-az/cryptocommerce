@@ -1,175 +1,120 @@
-const { expect } = require("chai")
-const {ethers} = require("ethers");
-
-const tokens = (n) => {
-    return ethers.utils.parseUnits(n.toString(), 'ether')
-}
+const { expect } = require("chai");
+const { ethers } = require("hardhat");
 
 // Global constants for listing an item...
-const ID = 1
-const NAME = "Shoes"
-const CATEGORY = "Clothing"
-const IMAGE = "https://ipfs.io/ipfs/QmTYEboq8raiBs7GTUg2yLXB3PMz6HuBNgNfSZBx5Msztg/shoes.jpg"
-const COST = tokens(1)
-const RATING = 4
-const STOCK = 5
+const ID = 1;
+const NAME = "Shoes";
+const CATEGORY = "Clothing";
+const IMAGE = "https://ipfs.io/ipfs/QmTYEboq8raiBs7GTUg2yLXB3PMz6HuBNgNfSZBx5Msztg/shoes.jpg";
+const COST = ethers.utils.parseEther("1"); // Assuming tokens(1) means 1 ether
+const RATING = 4;
+const STOCK = 5;
 
-describe("Cryptocommerce", () => {
-    let cryptocommerce
-    let deployer, buyer
+describe("Supply Chain Contracts", function () {
+    let productManagement;
+    let orderManagement;
+    let crateManagement;
+    let rfidManagement;
+    let accessControl;
 
-    beforeEach(async () => {
-        // Setup accounts
-        [deployer, buyer] = await ethers.getSigners()
+    let owner;
+    let addr1;
+    let addr2;
 
-        // Deploy contract
-        const Cryptocommerce = await ethers.getContractFactory("Cryptocommerce")
-        cryptocommerce = await Cryptocommerce.deploy()
-    })
+    beforeEach(async function () {
+        [owner, addr1, addr2] = await ethers.getSigners();
 
-    describe("updateRfidLocation", () => {
-        it("Allows owner to update RFID location", async () => {
-            const transaction = await cryptocommerce
-                .connect(deployer)
-                .updateRfidLocation(RFID_TAG, LOCATION);
-            await transaction.wait();
+        const ProductManagement = await ethers.getContractFactory("ProductManagement");
+        productManagement = await ProductManagement.deploy();
 
-            const rfidData = await cryptocommerce.getRfidData(RFID_TAG);
-            expect(rfidData.location).to.equal(LOCATION);
+        const OrderManagement = await ethers.getContractFactory("OrderManagement");
+        orderManagement = await OrderManagement.deploy();
+
+        const CrateManagement = await ethers.getContractFactory("CrateManagement");
+        crateManagement = await CrateManagement.deploy();
+
+        const RfidManagement = await ethers.getContractFactory("RfidManagement");
+        rfidManagement = await RfidManagement.deploy();
+
+        const AccessControl = await ethers.getContractFactory("AccessControl");
+        accessControl = await AccessControl.deploy();
+    });
+
+    describe("Product Management", function () {
+        it("Should list a new product", async function () {
+            await productManagement.listItem(ID, NAME, CATEGORY, IMAGE, COST, RATING, STOCK, "RFID_001");
+
+            const item = await productManagement.getItem(ID);
+            expect(item.name).to.equal(NAME);
+            expect(item.cost).to.equal(COST);
+            expect(item.stock).to.equal(STOCK);
         });
 
-        it("Emits RfidLocationUpdated event", async () => {
-            await expect(
-                cryptocommerce.connect(deployer).updateRfidLocation(RFID_TAG, LOCATION)
-            )
-                .to.emit(cryptocommerce, "RfidLocationUpdated")
-                .withArgs(deployer.address, RFID_TAG, LOCATION, anyValue); // anyValue is used to match the timestamp
-        });
+        it("Should update product stock", async function () {
+            await productManagement.listItem(ID, NAME, CATEGORY, IMAGE, COST, RATING, STOCK, "RFID_002");
+            await productManagement.updateItemStock(ID, 60);
 
-        it("Reverts if RFID tag or location is invalid", async () => {
-            await expect(
-                cryptocommerce.connect(deployer).updateRfidLocation("", LOCATION)
-            ).to.be.revertedWith("Invalid RFID tag");
-
-            await expect(
-                cryptocommerce.connect(deployer).updateRfidLocation(RFID_TAG, "")
-            ).to.be.revertedWith("Invalid location");
+            const item = await productManagement.getItem(ID);
+            expect(item.stock).to.equal(60);
         });
     });
 
-    describe("getRfidData", () => {
-        beforeEach(async () => {
-            // Update RFID location
-            const transaction = await cryptocommerce
-                .connect(deployer)
-                .updateRfidLocation(RFID_TAG, LOCATION);
-            await transaction.wait();
+    describe("Order Management", function () {
+        it("Should allow a user to buy a product", async function () {
+            await productManagement.listItem(ID, NAME, CATEGORY, IMAGE, COST, RATING, STOCK, "RFID_003");
+            await orderManagement.connect(addr1).buyItem(ID, { value: COST });
+
+            const order = await orderManagement.orders(addr1.address, 1);
+            expect(order.item.name).to.equal(NAME);
+            expect(await productManagement.getItem(ID)).to.have.property('stock').that.equals(STOCK - 1);
         });
 
-        it("Returns correct RFID data", async () => {
-            const rfidData = await cryptocommerce.getRfidData(RFID_TAG);
-            expect(rfidData.location).to.equal(LOCATION);
-            expect(rfidData.timestamp).to.be.greaterThan(0); // Timestamp should be a valid number
+        it("Should not allow buying out of stock product", async function () {
+            await productManagement.listItem(ID, NAME, CATEGORY, IMAGE, COST, RATING, 0, "RFID_004");
+            await expect(orderManagement.connect(addr1).buyItem(ID, { value: COST })).to.be.revertedWith("Out of stock");
         });
     });
 
+    describe("Crate Management", function () {
+        it("Should create a crate with products", async function () {
+            await productManagement.listItem(ID, NAME, CATEGORY, IMAGE, COST, RATING, STOCK, "RFID_005");
+            await productManagement.listItem(2, "Product F", CATEGORY, IMAGE, COST, RATING, STOCK, "RFID_006");
 
-    describe("Deployment", () => {
-        it("Sets the owner", async () => {
-            expect(await cryptocommerce.owner()).to.equal(deployer.address)
-        })
-    })
+            await crateManagement.createCrate([ID, 2], "RFID_Crate_001");
 
-    describe("Listing", () => {
-        let transaction
+            const productsInCrate = await crateManagement.getProductsInCrate(1); // Assuming crate ID is 1
+            expect(productsInCrate).to.include.members([ID, 2]);
+        });
 
-        beforeEach(async () => {
-            // List a item
-            transaction = await cryptocommerce.connect(deployer).list(ID, NAME, CATEGORY, IMAGE, COST, RATING, STOCK)
-            await transaction.wait()
-        })
+        it("Should ship a crate", async function () {
+            await crateManagement.createCrate([ID, 2], "RFID_Crate_002");
+            await crateManagement.shipCrate(1);
 
-        it("Returns item attributes", async () => {
-            const item = await cryptocommerce.items(ID)
+            const crate = await crateManagement.crates(1);
+            expect(crate.shipped).to.equal(true);
+        });
+    });
 
-            expect(item.id).to.equal(ID)
-            expect(item.name).to.equal(NAME)
-            expect(item.category).to.equal(CATEGORY)
-            expect(item.image).to.equal(IMAGE)
-            expect(item.cost).to.equal(COST)
-            expect(item.rating).to.equal(RATING)
-            expect(item.stock).to.equal(STOCK)
-        })
+    describe("RFID Management", function () {
+        it("Should update RFID location", async function () {
+            await rfidManagement.updateRfidLocation("RFID_001", "Warehouse A", 1);
+            const rfidData = await rfidManagement.getRfidData("RFID_001");
 
-        it("Emits List event", () => {
-            expect(transaction).to.emit(cryptocommerce, "List")
-        })
-    })
+            expect(rfidData.location).to.equal("Warehouse A");
+            expect(rfidData.crateId).to.equal(1);
+        });
+    });
 
-    describe("Buying", () => {
-        let transaction
+    describe("Access Control", function () {
+        it("Should allow admin to authorize a user", async function () {
+            await accessControl.authorizeUser(addr1.address);
+            expect(await accessControl.isUserAuthorized(addr1.address)).to.equal(true);
+        });
 
-        beforeEach(async () => {
-            // List a item
-            transaction = await cryptocommerce.connect(deployer).list(ID, NAME, CATEGORY, IMAGE, COST, RATING, STOCK)
-            await transaction.wait()
-
-            // Buy a item
-            transaction = await cryptocommerce.connect(buyer).buy(ID, { value: COST })
-            await transaction.wait()
-        })
-
-
-        it("Updates buyer's order count", async () => {
-            const result = await cryptocommerce.orderCount(buyer.address)
-            expect(result).to.equal(1)
-        })
-
-        it("Adds the order", async () => {
-            const order = await cryptocommerce.orders(buyer.address, 1)
-
-            expect(order.time).to.be.greaterThan(0)
-            expect(order.item.name).to.equal(NAME)
-        })
-
-        it("Updates the contract balance", async () => {
-            const result = await ethers.provider.getBalance(cryptocommerce.address)
-            expect(result).to.equal(COST)
-        })
-
-        it("Emits Buy event", () => {
-            expect(transaction).to.emit(cryptocommerce, "Buy")
-        })
-    })
-
-    describe("Withdrawing", () => {
-        let balanceBefore
-
-        beforeEach(async () => {
-            // List a item
-            let transaction = await cryptocommerce.connect(deployer).list(ID, NAME, CATEGORY, IMAGE, COST, RATING, STOCK)
-            await transaction.wait()
-
-            // Buy a item
-            transaction = await cryptocommerce.connect(buyer).buy(ID, { value: COST })
-            await transaction.wait()
-
-            // Get Deployer balance before
-            balanceBefore = await ethers.provider.getBalance(deployer.address)
-
-            // Withdraw
-            transaction = await cryptocommerce.connect(deployer).withdraw()
-            await transaction.wait()
-        })
-
-        it('Updates the owner balance', async () => {
-            const balanceAfter = await ethers.provider.getBalance(deployer.address)
-            expect(balanceAfter).to.be.greaterThan(balanceBefore)
-        })
-
-        it('Updates the contract balance', async () => {
-            const result = await ethers.provider.getBalance(cryptocommerce.address)
-            expect(result).to.equal(0)
-        })
-    })
-})
+        it("Should allow admin to deauthorize a user", async function () {
+            await accessControl.authorizeUser(addr1.address);
+            await accessControl.deauthorizeUser(addr1.address);
+            expect(await accessControl.isUserAuthorized(addr1.address)).to.equal(false);
+        });
+    });
+});
