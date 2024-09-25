@@ -26,7 +26,7 @@ const ProductCard = () => {
               src="/static/img/Userprofile.png"
               alt="Seller"
             />
-            <span className="text-sm text-gray-600">Seller Address</span>
+            <span className="text-sm text-gray-600">Seller Name</span>
           </div>
           <span className="text-xl font-bold text-blue-600">
             4.46<span> ETH</span>
