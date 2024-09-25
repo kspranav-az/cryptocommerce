@@ -32,24 +32,63 @@ export default function Landingpage() {
             </div>
         </section>
         <section id='2' className='h-screen w-full '>
-            <div className='h-[100%] w-full flex gap-5 items-center justify-center' >
-                <div className='h-[80%] w-[30%]  border-2 border-[#42457B] rounded-3xl overflow-hidden'>
-                    <div className=''>
-                        <h1>
+            <div className='h-[100%] w-full flex gap-20 items-center justify-center' >
+                <div className='h-[60%] w-[20%]  border-2 border-[#42457B] rounded-3xl overflow-hidden flex flex-col pl-5'>
+                    <div className='h-[25%] flex items-center justify-start '>
+                        <h1 className='text-2xl font-semibold'>
                             Building the Future of
                             <br />
-                            Decentralized Marketplace
+                            <span style={{ color: '#775CF0' }}>Decentralized</span> Marketplace
                         </h1>
                     </div>
-                    <div className=''>
-                        <h1>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae quod in deleniti earum voluptatibus obcaecati consequuntur quos? Debitis quos sunt earum cupiditate tempora iusto voluptatem ipsum porro sapiente, repellat harum.
-                        </h1>
-                    </div>
-                        <img src="/etherium.svg" alt="" className='h-max w-max'/>
-                </div>
-                <div className='h-[80%] w-[30%] border-2 border-[#42457B] rounded-3xl'>
 
+                    <div className=''>
+                        <h1 className='text-sm'>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit.<br/> Recusandae quod in delenit
+                        </h1>
+                    </div>
+                    <div className=' h-[40rem] w-[40rem]  overflow-y-hidden flex justify-end items-center ' style={{ marginLeft: '-16vh', marginRight: '-20vh' }}>
+                        <img src="/etherium.png" alt="" className='h-[30rem] w-[40rem] '/>
+                    </div>
+                        
+                </div>
+                <div className='h-[60%] w-[20%]  border-2 border-[#42457B] rounded-3xl overflow-hidden flex flex-col pl-5'>
+                    <div className='h-[25%] flex items-center justify-start '>
+                    <h1 className='text-2xl font-semibold'>
+                            Secured & Seamless
+                            <br />
+                            Transfer through <span style={{ color: '#775CF0' }}>RFID</span> 
+                        </h1>
+                        
+                    </div>
+
+                    <div className=''>
+                        <h1 className='text-sm'>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit.<br/> Recusandae quod in delenit
+                        </h1>
+                    </div>
+                    <div className=' h-full flex justify-end items-center pr-5 ' >
+                        <img src="/RPID.png" alt="" className='h-max w-max '/>
+                    </div>
+                </div>
+                <div className='h-[60%] w-[20%]  border-2 border-[#42457B] rounded-3xl overflow-hidden flex flex-col pl-5'>
+                    <div className='h-[25%] flex items-center justify-start '>
+                    <h1 className='text-2xl font-semibold'>
+                            Secured & Seamless
+                            <br />
+                            Transfer through <span style={{ color: '#775CF0' }}>RFID</span> 
+                        </h1>
+                        
+                    </div>
+
+                    <div className=''>
+                        <h1 className='text-sm'>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit.<br/> Recusandae quod in delenit
+                        </h1>
+                    </div>
+                    <div className=' h-full flex justify-end items-center pr-5 ' >
+                        <img src="/RPID.png" alt="" className='h-max w-max '/>
+                    </div>
                 </div>
             </div>
         </section>
