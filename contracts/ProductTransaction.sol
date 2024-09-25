@@ -2,7 +2,8 @@
 pragma solidity ^0.8.9;
 
 contract ProductTransaction{
-    address public owner;
+    address payable public owner;
+    address public pastOwner;
 
     struct Item {
         uint256 id;
@@ -13,6 +14,10 @@ contract ProductTransaction{
         uint256 rating;
         uint256 stock;
     }
+    struct RfidData {
+        string location;
+        uint timestamp;
+    }
 
     struct Order {
         uint256 time;
@@ -22,17 +27,57 @@ contract ProductTransaction{
     mapping(uint256 => Item) public items;
     mapping(address => mapping(uint256 => Order)) public orders;
     mapping(address => uint256) public orderCount;
+    mapping(string => RfidData) public rfidRecords;
 
     event Buy(address buyer, uint256 orderId, uint256 itemId);
     event List(string name, uint256 cost, uint256 quantity);
+    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+    event RfidLocationUpdated(address indexed updater, string rfidTag, string location, uint timestamp);
 
     modifier onlyOwner() {
         require(msg.sender == owner);
         _;
     }
-
     constructor() {
-        owner = msg.sender;
+        owner = payable(msg.sender);
+        pastOwner = address(0);
+    }
+
+
+    function transferOwnership(
+        address payable newOwner
+    ) public onlyOwner {
+        require(newOwner != address(0), "New owner is the zero address");
+        pastOwner = owner;
+        emit OwnershipTransferred(owner, newOwner);
+        owner = newOwner;
+    }
+
+    function updateRfidLocation(string memory rfidTag, string memory location) public onlyOwner {
+        require(bytes(rfidTag).length > 0, "Invalid RFID tag");
+        require(bytes(location).length > 0, "Invalid location");
+
+        rfidRecords[rfidTag] = RfidData(location, block.timestamp);
+
+        emit RfidLocationUpdated(msg.sender, rfidTag, location, block.timestamp);
+    }
+
+
+    function getRfidData(string memory rfidTag) public view returns (string memory location, uint timestamp) {
+        RfidData memory data = rfidRecords[rfidTag];
+        return (data.location, data.timestamp);
+    }
+
+
+
+
+    function updateRfidLocation(string memory rfidTag, string memory location) public onlyOwner {
+        require(bytes(rfidTag).length > 0, "Invalid RFID tag");
+        require(bytes(location).length > 0, "Invalid location");
+
+        rfidRecords[rfidTag] = RfidData(location, block.timestamp);
+
+        emit RfidLocationUpdated(msg.sender, rfidTag, location, block.timestamp);
     }
 
     function list(
