@@ -1,5 +1,6 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
+const { BigNumber } = require('bignumber.js');
 
 describe("E-commerce Smart Contracts with RFID", function () {
     let ProductManagement, productManagement;
@@ -87,8 +88,8 @@ describe("E-commerce Smart Contracts with RFID", function () {
             await productManagement.listItem(1, "Laptop", "Electronics", "image.png", 1000, 5, 50, "RFID123");
             await productManagement.listItem(2, "Laptop", "Electronics", "image.png", 1000, 5, 50, "RFID123");
             await productManagement.listItem(3, "Laptop", "Electronics", "image.png", 1000, 5, 50, "RFID123");
-            const crateId = await crateManagement.createCrate([1, 2, 3], "CrateRFID123");
-            // const crate = await crateManagement.crates(crateId);
+            const { crateId } = (await crateManagement.createCrate([1, 2, 3], "CrateRFID123")).toBigInt();
+            //const crate = await crateManagement.crates(crateId)//.value;
             expect(crateId).to.equal(3);
         });
 
