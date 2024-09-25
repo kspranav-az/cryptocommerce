@@ -1,8 +1,8 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "E:\\cryptocommerce\\contracts\\AccessControl.sol": {
-      "lastModificationDate": 1727279941148,
+    "C:\\Users\\Kavikkannan\\Desktop\\projects\\WEB dev\\HackBattle\\cryptocommerce\\contracts\\AccessControl.sol": {
+      "lastModificationDate": 1727285943573,
       "contentHash": "18d710ea4e8b095684311f2f77be29b0",
       "sourceName": "contracts/AccessControl.sol",
       "solcConfig": {
@@ -37,8 +37,8 @@
         "AccessControl"
       ]
     },
-    "E:\\cryptocommerce\\contracts\\CrateManagement.sol": {
-      "lastModificationDate": 1727285532644,
+    "C:\\Users\\Kavikkannan\\Desktop\\projects\\WEB dev\\HackBattle\\cryptocommerce\\contracts\\CrateManagement.sol": {
+      "lastModificationDate": 1727285943573,
       "contentHash": "75dbda72bb710c8cba7ebfa9441661b1",
       "sourceName": "contracts/CrateManagement.sol",
       "solcConfig": {
@@ -75,8 +75,8 @@
         "CrateManagement"
       ]
     },
-    "E:\\cryptocommerce\\contracts\\OrderManagement.sol": {
-      "lastModificationDate": 1727270490965,
+    "C:\\Users\\Kavikkannan\\Desktop\\projects\\WEB dev\\HackBattle\\cryptocommerce\\contracts\\OrderManagement.sol": {
+      "lastModificationDate": 1727275127024,
       "contentHash": "c717b13e0d7263e21b9cd711252c1be2",
       "sourceName": "contracts/OrderManagement.sol",
       "solcConfig": {
@@ -113,8 +113,8 @@
         "OrderManagement"
       ]
     },
-    "E:\\cryptocommerce\\contracts\\ProductManagement.sol": {
-      "lastModificationDate": 1727270444809,
+    "C:\\Users\\Kavikkannan\\Desktop\\projects\\WEB dev\\HackBattle\\cryptocommerce\\contracts\\ProductManagement.sol": {
+      "lastModificationDate": 1727275127025,
       "contentHash": "422c42aaf18e5f29e094b7399cc93bd4",
       "sourceName": "contracts/ProductManagement.sol",
       "solcConfig": {
@@ -149,8 +149,8 @@
         "ProductManagement"
       ]
     },
-    "E:\\cryptocommerce\\contracts\\RfidManagement.sol": {
-      "lastModificationDate": 1727279941148,
+    "C:\\Users\\Kavikkannan\\Desktop\\projects\\WEB dev\\HackBattle\\cryptocommerce\\contracts\\RfidManagement.sol": {
+      "lastModificationDate": 1727275127025,
       "contentHash": "7e06aa5dfef3a873795b0752e52727f1",
       "sourceName": "contracts/RfidManagement.sol",
       "solcConfig": {
@@ -187,8 +187,8 @@
         "RfidManagement"
       ]
     },
-    "E:\\cryptocommerce\\contracts\\cryptocommerce.sol": {
-      "lastModificationDate": 1727279941148,
+    "C:\\Users\\Kavikkannan\\Desktop\\projects\\WEB dev\\HackBattle\\cryptocommerce\\contracts\\cryptocommerce.sol": {
+      "lastModificationDate": 1727285943575,
       "contentHash": "17f674ef9fa2d8d191602a261d4b4488",
       "sourceName": "contracts/cryptocommerce.sol",
       "solcConfig": {
