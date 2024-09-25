@@ -9,18 +9,20 @@ import { db } from "@/firebaseConfig";
 import { Dialog } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Loading from "./Loading";
-import { ethers } from "ethers";
+import { getAddress } from 'ethers';
+
 
 const navigation = [
   { name: "Explore", href: "/" },
   { name: "Trending Products", href: "/" },
 ];
 
-const Commonheader = ({ account, setAccount }) => {
+const Commonheader = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const router = useRouter();
+  const [accounts, setAccount] = useState(null) 
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
@@ -59,13 +61,17 @@ const Commonheader = ({ account, setAccount }) => {
         console.error("Error signing in:", error.message);
       });
   };
-  const connectHandler = async () => {
-    const accounts = await window.ethereum.request({
-      method: "eth_requestAccounts",
-    });
-    const account = ethers.utils.getAddress(accounts[0]);
-    setAccount(account);
-  };
+
+
+const connectHandler = async () => {
+  const accounts = await window.ethereum.request({
+    method: "eth_requestAccounts",
+  });
+  
+  const account = getAddress(accounts[0]); 
+  setAccount(account);
+};
+
 
   return (
     <>
@@ -121,9 +127,9 @@ const Commonheader = ({ account, setAccount }) => {
 
               <div className="hidden lg:flex lg:flex-1 lg:justify-end">
                 <div className="pr-5">
-                  {account ? (
+                  {accounts ? (
                     <button type="button" className="nav__connect ">
-                      {account.slice(0, 6) + "..." + account.slice(38, 42)}
+                      {accounts.slice(0, 6) + "..." + accounts.slice(38, 42)}
                     </button>
                   ) : (
                     <button
@@ -190,9 +196,9 @@ const Commonheader = ({ account, setAccount }) => {
                       ))}
                     </div>
                     <div className="text-black">
-                      {account ? (
+                      {accounts ? (
                         <button type="button" className="nav__connect ">
-                          {account.slice(0, 6) + "..." + account.slice(38, 42)}
+                          {accounts.slice(0, 6) + "..." + accounts.slice(38, 42)}
                         </button>
                       ) : (
                         <button
