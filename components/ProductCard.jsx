@@ -8,7 +8,7 @@ const ProductCard = ({
   sellerName,
 }) => {
   return (
-    <div className="max-w-[280px] bg-black opacity-40 rounded-md shadow-md overflow-hidden mx-auto my-4 transition-transform transform hover:scale-105">
+    <div className="max-w-[280px] bg-black opacity-40 rounded-md shadow-md overflow-hidden mx-auto my-4 transition-transform transform hover:scale-105 hover:opacity-80">
       {/* Product Image */}
       <div className="p-2">
         <img

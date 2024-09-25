@@ -3,6 +3,46 @@ import MainButton from "@/components/MainButton";
 import ProductCard from "@/components/ProductCard";
 import Link from "next/link";
 
+const ProductDetails = [
+  {
+    productname: "Iphone",
+    productamounteth: "4.5",
+    productamountruppe: "3000.0",
+    sellername: "Apple",
+  },
+  // Add more products as needed to fill the grid
+  {
+    productname: "Iphone 12",
+    productamounteth: "3.5",
+    productamountruppe: "2500.0",
+    sellername: "Apple",
+  },
+  {
+    productname: "Iphone 13",
+    productamounteth: "5.0",
+    productamountruppe: "3500.0",
+    sellername: "Apple",
+  },
+  {
+    productname: "Iphone 14",
+    productamounteth: "6.0",
+    productamountruppe: "4000.0",
+    sellername: "Apple",
+  },
+  {
+    productname: "Iphone SE",
+    productamounteth: "2.0",
+    productamountruppe: "1500.0",
+    sellername: "Apple",
+  },
+  {
+    productname: "Iphone XR",
+    productamounteth: "3.0",
+    productamountruppe: "2200.0",
+    sellername: "Apple",
+  },
+];
+
 export default function Landingpage() {
   return (
     <div>
@@ -22,6 +62,7 @@ export default function Landingpage() {
             <h1 className="text-2xl">
               Revolutionizing the way you buy and sell.
             </h1>
+            <MainButton buttonText={"Join Us"}></MainButton>
 
             {/* <div className=' h-10 w-40 border-2 flex items-center justify-center text-2xl' 
                         style={{ 
@@ -109,8 +150,20 @@ export default function Landingpage() {
         </div>
       </section>
 
-      <section>
-        <ProductCard></ProductCard>
+      <section class="mt-6 m-10">
+        <div className="grid grid-cols-5 gap-2">
+          {" "}
+          {/* Adjust columns as needed */}
+          {ProductDetails.map((product, index) => (
+            <ProductCard
+              key={index}
+              productName={product.productname}
+              productAmountETH={product.productamounteth}
+              productAmountRuppe={product.productamountruppe}
+              sellerName={product.sellername}
+            />
+          ))}
+        </div>
       </section>
     </div>
   );
