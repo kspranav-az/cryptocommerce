@@ -6,7 +6,7 @@ import "./OrderManagement.sol";
 contract CrateManagement is OrderManagement {
     struct Crate {
         uint256 crateId;
-        uint256[] productIds; // Product IDs in the crate
+        uint256[]  productIds; // Product IDs in the crate
         bool shipped;
     }
 

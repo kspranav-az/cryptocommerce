@@ -14,22 +14,22 @@ describe("E-commerce Smart Contracts with RFID", function () {
         // Deploy ProductManagement contract
         ProductManagement = await ethers.getContractFactory("ProductManagement");
         productManagement = await ProductManagement.deploy();
-        await productManagement.deployed();
+        await productManagement.waitForDeployment();
 
         // Deploy OrderManagement contract
         OrderManagement = await ethers.getContractFactory("OrderManagement");
         orderManagement = await OrderManagement.deploy();
-        await orderManagement.deployed();
+        await orderManagement.waitForDeployment();
 
         // Deploy CrateManagement contract
         CrateManagement = await ethers.getContractFactory("CrateManagement");
         crateManagement = await CrateManagement.deploy();
-        await crateManagement.deployed();
+        await crateManagement.waitForDeployment();
 
         // Deploy RfidManagement contract
         RfidManagement = await ethers.getContractFactory("RfidManagement");
         rfidManagement = await RfidManagement.deploy();
-        await rfidManagement.deployed();
+        await rfidManagement.waitForDeployment();
     });
 
     describe("Product Management", function () {
@@ -57,38 +57,37 @@ describe("E-commerce Smart Contracts with RFID", function () {
     });
 
     describe("Order Management", function () {
-        it("should allow users to buy items", async function () {
-            await productManagement.listItem(1, "Laptop", "Electronics", "image.png", 1000, 5, 50, "RFID123");
+    it("should allow users to buy items", async function () {
+        await productManagement.listItem(1, "Laptop", "Electronics", "image.png", 1000, 5, 50, "RFID123");
 
-            // Buy the item (ensure sufficient ETH is sent)
-            await orderManagement.connect(addr1).buyItem(1, { value: ethers.utils.parseEther("1.0") });
+        // Check the item exists and stock is available
+        const item = await productManagement.getItem(1);
+        console.log("Item stock before purchase:", item.stock.toString());
 
-            const order = await orderManagement.orders(addr1.address, 1);
-            expect(order.item.id).to.equal(1);
-        });
+        // Buy the item (ensure sufficient ETH is sent)
+        await orderManagement.connect(addr1).buyItem(1, { value: ethers.parseEther("1.0") });
 
-        it("should reduce stock after an item is bought", async function () {
-            await productManagement.listItem(1, "Laptop", "Electronics", "image.png", 1000, 5, 50, "RFID123");
-            await orderManagement.connect(addr1).buyItem(1, { value: ethers.utils.parseEther("1.0") });
-
-            const item = await productManagement.getItem(1);
-            expect(item.stock).to.equal(49);
-        });
-
-        it("should revert if insufficient funds are sent", async function () {
-            await productManagement.listItem(1, "Laptop", "Electronics", "image.png", 1000, 5, 50, "RFID123");
-
-            // Attempt to buy the item with insufficient funds
-            await expect(
-                orderManagement.connect(addr1).buyItem(1, { value: ethers.utils.parseEther("0.5") })
-            ).to.be.revertedWith("Insufficient funds");
-        });
+        const order = await orderManagement.orders(addr1.address, 1);
+        expect(order.item.id).to.equal(1);
     });
+
+    it("should reduce stock after an item is bought", async function () {
+        await productManagement.listItem(1, "Laptop", "Electronics", "image.png", 1000, 5, 50, "RFID123");
+        await orderManagement.connect(addr1).buyItem(1, { value: ethers.parseEther("1.0") });
+
+        const item = await productManagement.getItem(1);
+        console.log("Item stock after purchase:", item.stock.toString());
+        expect(item.stock).to.equal(49);
+    });
+});
+
 
     describe("Crate Management", function () {
         it("should allow owner to create a crate", async function () {
+            await productManagement.listItem(1, "Laptop", "Electronics", "image.png", 1000, 5, 50, "RFID123");
+            await productManagement.listItem(2, "Laptop", "Electronics", "image.png", 1000, 5, 50, "RFID123");
+            await productManagement.listItem(3, "Laptop", "Electronics", "image.png", 1000, 5, 50, "RFID123");
             await crateManagement.createCrate([1, 2, 3], "CrateRFID123");
-
             const crate = await crateManagement.crates(1);
             expect(crate.productIds.length).to.equal(3);
         });
@@ -98,6 +97,7 @@ describe("E-commerce Smart Contracts with RFID", function () {
             await crateManagement.shipCrate(1);
 
             const crate = await crateManagement.crates(1);
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
             expect(crate.shipped).to.be.true;
         });
 

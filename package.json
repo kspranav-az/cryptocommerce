@@ -22,15 +22,18 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^2.0.0",
-    "@nomiclabs/hardhat-ethers": "^2.2.3",
+    "@nomicfoundation/hardhat-chai-matchers": "^2.0.8",
+    "@nomicfoundation/hardhat-ethers": "^3.0.8",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "chai": "^4.2.0",
     "eslint": "^8",
     "eslint-config-next": "14.2.13",
-    "ethers": "^5.7.2",
+    "ethers": "^6.13.2",
     "hardhat": "^2.22.12",
+    "hardhat-ethers": "^1.0.1",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
