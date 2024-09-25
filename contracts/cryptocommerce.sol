@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.9;
 
-contract ProductTransaction{
+contract cryptocommerce {
     address payable public owner;
     address public pastOwner;
 
@@ -70,15 +70,6 @@ contract ProductTransaction{
 
 
 
-
-    function updateRfidLocation(string memory rfidTag, string memory location) public onlyOwner {
-        require(bytes(rfidTag).length > 0, "Invalid RFID tag");
-        require(bytes(location).length > 0, "Invalid location");
-
-        rfidRecords[rfidTag] = RfidData(location, block.timestamp);
-
-        emit RfidLocationUpdated(msg.sender, rfidTag, location, block.timestamp);
-    }
 
     function list(
         uint256 _id,

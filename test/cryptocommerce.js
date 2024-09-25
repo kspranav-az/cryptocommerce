@@ -26,6 +26,53 @@ describe("Cryptocommerce", () => {
         cryptocommerce = await Cryptocommerce.deploy()
     })
 
+    describe("updateRfidLocation", () => {
+        it("Allows owner to update RFID location", async () => {
+            const transaction = await cryptocommerce
+                .connect(deployer)
+                .updateRfidLocation(RFID_TAG, LOCATION);
+            await transaction.wait();
+
+            const rfidData = await cryptocommerce.getRfidData(RFID_TAG);
+            expect(rfidData.location).to.equal(LOCATION);
+        });
+
+        it("Emits RfidLocationUpdated event", async () => {
+            await expect(
+                cryptocommerce.connect(deployer).updateRfidLocation(RFID_TAG, LOCATION)
+            )
+                .to.emit(cryptocommerce, "RfidLocationUpdated")
+                .withArgs(deployer.address, RFID_TAG, LOCATION, anyValue); // anyValue is used to match the timestamp
+        });
+
+        it("Reverts if RFID tag or location is invalid", async () => {
+            await expect(
+                cryptocommerce.connect(deployer).updateRfidLocation("", LOCATION)
+            ).to.be.revertedWith("Invalid RFID tag");
+
+            await expect(
+                cryptocommerce.connect(deployer).updateRfidLocation(RFID_TAG, "")
+            ).to.be.revertedWith("Invalid location");
+        });
+    });
+
+    describe("getRfidData", () => {
+        beforeEach(async () => {
+            // Update RFID location
+            const transaction = await cryptocommerce
+                .connect(deployer)
+                .updateRfidLocation(RFID_TAG, LOCATION);
+            await transaction.wait();
+        });
+
+        it("Returns correct RFID data", async () => {
+            const rfidData = await cryptocommerce.getRfidData(RFID_TAG);
+            expect(rfidData.location).to.equal(LOCATION);
+            expect(rfidData.timestamp).to.be.greaterThan(0); // Timestamp should be a valid number
+        });
+    });
+
+
     describe("Deployment", () => {
         it("Sets the owner", async () => {
             expect(await cryptocommerce.owner()).to.equal(deployer.address)
