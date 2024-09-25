@@ -1,9 +1,8 @@
 import React from "react";
 
-const MainButton = ({ buttonText,Href }) => {
+const MainButton = ({ buttonText, onClick }) => {
   return (
     <button
-    
       style={{
         height: "2.5rem",
         width: "10rem",
@@ -18,7 +17,7 @@ const MainButton = ({ buttonText,Href }) => {
         position: "relative",
         backdropFilter: "blur(10px)", // Apply background blur behind the button
       }}
-      onClick={"TriggerAction"}
+      onClick={onClick} // Ensure onClick is a function
     >
       <div
         style={{
