@@ -70,6 +70,15 @@ function PurchaseSection() {
     setSelectedProduct(product); // Store the clicked product details
     setIsPopupOpen(true); // Open the popup
   };
+  const buyHandler = async () => {
+    const signer = await provider.getSigner()
+
+    // Buy item...
+    let transaction = await ProductTransactions.connect(signer).buy(item.id, { value: item.cost })
+    await transaction.wait()
+
+    setHasBought(true)
+  }
 
   const handleClosePopup = () => {
     setIsPopupOpen(false); // Close the popup

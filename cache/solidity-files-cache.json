@@ -188,8 +188,8 @@
       ]
     },
     "C:\\Users\\Harsh\\WebstormProjects\\cryptocommerce\\contracts\\IntegratedContract.sol": {
-      "lastModificationDate": 1727333809345,
-      "contentHash": "3bf1946e18dc34f49a731e7050c846b6",
+      "lastModificationDate": 1727340089347,
+      "contentHash": "51baf2e881e5c665ef3797b507f6a5d4",
       "sourceName": "contracts/IntegratedContract.sol",
       "solcConfig": {
         "version": "0.8.27",
@@ -221,6 +221,42 @@
       ],
       "artifacts": [
         "IntegratedContract"
+      ]
+    },
+    "C:\\Users\\Harsh\\WebstormProjects\\cryptocommerce\\contracts\\ProductTransaction.sol": {
+      "lastModificationDate": 1727341885388,
+      "contentHash": "11e75d40a1e6dce07eec24bfca895057",
+      "sourceName": "contracts/ProductTransaction.sol",
+      "solcConfig": {
+        "version": "0.8.27",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "ProductTransaction"
       ]
     }
   }
