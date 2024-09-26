@@ -17,11 +17,11 @@ describe("IntegratedContract", function () {
 
     describe("Product Management", function () {
         it("should create a product", async function () {
-            await integratedContract.createProduct("Product A", "Category A", "image_url", ethers.utils.parseEther("1.0"), 5);
+            await integratedContract.createProduct("Product A", "Category A", "image_url", ethers.parseEther("1.0"), 5);
             const product = await integratedContract.products(1);
 
             expect(product.name).to.equal("Product A");
-            expect(product.cost).to.equal(ethers.utils.parseEther("1.0"));
+            expect(product.cost.toString()).to.equal(ethers.parseEther("1.0").toString());
             expect(product.stock).to.equal(0);
         });
 
@@ -35,9 +35,8 @@ describe("IntegratedContract", function () {
 
     describe("Order Management", function () {
         it("should place an order", async function () {
-            // First, add stock to the product
-            await integratedContract.addStock(1, 1);
-            await integratedContract.placeOrder(1, { value: ethers.utils.parseEther("1.0") });
+            await integratedContract.addStock(1, 1); // Ensure there's stock to sell
+            await integratedContract.placeOrder(1, { value: ethers.parseEther("1.0") });
 
             const order = await integratedContract.orders(1);
             expect(order.buyer).to.equal(owner.address);
@@ -46,7 +45,7 @@ describe("IntegratedContract", function () {
 
         it("should retrieve user orders", async function () {
             const userOrders = await integratedContract.getUserOrders(owner.address);
-            expect(userOrders.length).to.equal(1);
+            expect(userOrders.length).to.equal(1); // Now we expect 1 order
         });
     });
 
@@ -55,7 +54,6 @@ describe("IntegratedContract", function () {
             await integratedContract.createCrate([1, 2, 3]);
             const crate = await integratedContract.crates(1);
 
-            // Ensure the crate is properly created and itemIds are set
             expect(crate.currentOwner).to.equal(owner.address);
             expect(crate.itemIds.length).to.equal(3); // Check that 3 itemIds are set
         });
@@ -83,12 +81,13 @@ describe("IntegratedContract", function () {
 
     describe("Financial Management", function () {
         it("should allow the owner to withdraw funds", async function () {
-            // Assuming there are funds to withdraw
+            // Assuming there's some funds to withdraw, we can simulate adding funds first
+            await integratedContract.placeOrder(1, { value: ethers.parseEther("1.0") }); // Place an order to fund contract
             const initialBalance = await ethers.provider.getBalance(owner.address);
             await integratedContract.withdraw();
             const finalBalance = await ethers.provider.getBalance(owner.address);
 
-            expect(finalBalance).to.be.greaterThan(initialBalance);
+            expect(finalBalance).to.be.above(initialBalance); // Check if the owner's balance increased
         });
     });
 });
