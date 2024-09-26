@@ -88,8 +88,16 @@ describe("E-commerce Smart Contracts with RFID", function () {
             await productManagement.listItem(1, "Laptop", "Electronics", "image.png", 1000, 5, 50, "RFID123");
             await productManagement.listItem(2, "Laptop", "Electronics", "image.png", 1000, 5, 50, "RFID123");
             await productManagement.listItem(3, "Laptop", "Electronics", "image.png", 1000, 5, 50, "RFID123");
-            const { crateId } = (await crateManagement.createCrate([1, 2, 3], "CrateRFID123")).toBigInt();
+            const tx = await crateManagement.createCrate([1, 2, 3], "CrateRFID123");
+            const receipt = await tx.wait(); // Wait for the transaction to be mined
+
+            // Extract the event from the receipt
+            // const event = receipt.events.find(event => event.event === 'CrateCreated');
+            const crateId = ethers.parseEther( receipt.logsBloom ); // Get the crateId from the event arguments
+            console.log(`Crate created with ID: ${crateId}`);
+            // const  crateId  = (await crateManagement.createCrate([1, 2, 3], "CrateRFID123"));
             //const crate = await crateManagement.crates(crateId)//.value;
+            console.log("CrateId ", crateId);
             expect(crateId).to.equal(3);
         });
 
