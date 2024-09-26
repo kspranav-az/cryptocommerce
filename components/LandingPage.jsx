@@ -38,7 +38,6 @@ const ProductDetails = [
     productamountruppe: "1500.0",
     sellername: "Apple.in",
   },
-  
 ];
 
 export default function Landingpage() {
@@ -60,19 +59,10 @@ export default function Landingpage() {
             <h1 className="text-2xl">
               Revolutionizing the way you buy and sell.
             </h1>
-
-            {/* <div className=' h-10 w-40 border-2 flex items-center justify-center text-2xl' 
-                        style={{ 
-                        borderImage: 'linear-gradient(to right, #775CF0, #42457B) 1', 
-                        borderRadius:'2rem'
-                        }}>
-                    Join us
-                    </div> */}
             <Link href={"/User"}>
-            <div className="flex items-center justify-center border-4 p-2 pl-4 pr-4 border-white rounded-2xl hover:bg-[#30207e] text-xl">
-            Join Us!
-            </div>
-              
+              <div className="flex items-center justify-center border-4 p-2 pl-4 pr-4 border-white rounded-2xl hover:bg-[#30207e] text-xl">
+                Join Us!
+              </div>
             </Link>
           </div>
         </div>
