@@ -9,12 +9,8 @@ const UserProfile = () => {
   const [displayName, setDisplayName] = useState("");
   const [userDetails, setUserDetails] = useState({
     name: "",
-    regno: "",
     phonenumber: "",
-    age: "",
-    graduate: "",
-    branch: "",
-    yearofpassout: "",
+    address: "",
   });
 
   useEffect(() => {
@@ -51,6 +47,7 @@ const UserProfile = () => {
       fetchUserDetails();
     }
   }, [displayName]);
+
   const handleChange = (e) => {
     setUserDetails({ ...userDetails, [e.target.name]: e.target.value });
   };
@@ -72,173 +69,83 @@ const UserProfile = () => {
       });
   };
 
-  const [bookingDetails, setBookingDetails] = useState(null);
-  useEffect(() => {
-    const fetchBookingDetails = async () => {
-      try {
-        setLoading(true);
-        const bookingRef = ref(db, `newuser/bookings/${displayName}`);
-        const bookingSnapshot = await get(bookingRef);
-        if (bookingSnapshot.exists()) {
-          const bookingData = bookingSnapshot.val();
-          const vehicleRef = ref(
-            db,
-            `newuser/vechile1/${bookingData.vehicleNumber}`
-          );
-          const vehicleSnapshot = await get(vehicleRef);
-          const v = vehicleSnapshot.val();
-          if (vehicleSnapshot.exists()) {
-            setBookingDetails({
-              carNumber: bookingData.vehicleNumber,
-              from: v.from,
-              to: v.to,
-              date: v.date,
-            });
-          }
-        }
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching booking details:", error);
-        setLoading(false);
-      }
-    };
-    if (displayName) {
-      fetchBookingDetails();
-    }
-  }, [displayName]);
-
   return (
-    <div className="container mx-auto px-4 py-8   h-[60rem] flex flex-col justify-center ">
-      <div className="flex flex-col sm:flex-row justify-around h-[65vh] sm:h-[35vh] gap-8">
-        <div className="mb-8 bg-gray-400 rounded-l-3xl w-full h-full shadow-black shadow-2xl">
-          <h3 className="text-lg font-semibold mb-2 pl-4">Personal Details</h3>
-          <div className="flex flex-col justify-around h-full text-black">
-            <div className="flex justify-around">
-              <h1>Reg Number</h1>
+    <div className="container min-h-screen flex flex-col justify-center items-center py-2">
+      <div
+        id="main-profile-form"
+        className="flex flex-col sm:flex-row justify-around items-center w-[500px] h-auto gap-4 bg-navBackground shadow-sm rounded-md border-violet-800 border-1 p-6"
+      >
+        <div className="flex flex-col justify-around w-full h-full text-white">
+          <h3 className="text-lg font-semibold mb-2">Personal Details</h3>
+          <div className="flex flex-col gap-3">
+            <div className="flex justify-between items-center">
+              <label htmlFor="name" className="font-medium">
+                Name
+              </label>
               <input
+                id="name"
                 type="text"
-                name="regno"
-                value={userDetails.regno}
+                name="name"
+                value={userDetails.name}
                 onChange={handleChange}
                 disabled={!editMode}
+                className={`border rounded-md p-2 ${
+                  editMode ? "border-gray-400" : "border-gray-200"
+                } w-[250px]`}
               />
             </div>
-            <div className="flex justify-around">
-              <h1>Phone Number</h1>
+            <div className="flex justify-between items-center">
+              <label htmlFor="phonenumber" className="font-medium">
+                Phone Number
+              </label>
               <input
+                id="phonenumber"
                 type="text"
                 name="phonenumber"
                 value={userDetails.phonenumber}
                 onChange={handleChange}
                 disabled={!editMode}
+                className={`border rounded-md p-2 ${
+                  editMode ? "border-gray-400" : "border-gray-200"
+                } w-[250px]`}
               />
             </div>
-            <div className="flex justify-around">
-              <h1>Age</h1>
+            <div className="flex justify-between items-center">
+              <label htmlFor="address" className="font-medium">
+                Address
+              </label>
               <input
+                id="address"
                 type="text"
-                name="age"
-                value={userDetails.age}
+                name="address"
+                value={userDetails.address}
                 onChange={handleChange}
                 disabled={!editMode}
+                className={`border rounded-md p-2 ${
+                  editMode ? "border-gray-400" : "border-gray-200"
+                } w-[250px]`}
               />
             </div>
-          </div>
-        </div>
-        <div className="mb-8 bg-gray-400 rounded-r-3xl w-full h-full shadow-black shadow-2xl">
-          <h3 className="text-lg font-semibold mb-2 pl-4 text-end pr-3">
-            Academic Details
-          </h3>
-          <div className="flex flex-col justify-around h-full text-black">
-            <div className="flex justify-around">
-              <h1>Graduate</h1>
-              <select
-                name="graduate"
-                value={userDetails.graduate}
-                onChange={handleChange}
-                disabled={!editMode}
-              >
-                <option value="UG">UG</option>
-                <option value="PG">PG</option>
-              </select>
-            </div>
-            <div className="flex justify-around">
-              <h1>Branch</h1>
-              <select
-                name="branch"
-                value={userDetails.branch}
-                onChange={handleChange}
-                disabled={!editMode}
-              >
-                <option value="CSE">CSE</option>
-                <option value="IT">IT</option>
-                <option value="MECH">MECH</option>
-                <option value="CIVIL">CIVIL</option>
-              </select>
-            </div>
-            <div className="flex justify-around">
-              <h1>Year of Passout</h1>
-              <select
-                name="yearofpassout"
-                value={userDetails.yearofpassout}
-                onChange={handleChange}
-                disabled={!editMode}
-              >
-                <option value="2024">2024</option>
-                <option value="2025">2025</option>
-                <option value="2026">2026</option>
-                <option value="2027">2027</option>
-                <option value="2028">2028</option>
-              </select>
+
+            <div className="flex justify-center mt-4">
+              {editMode ? (
+                <button
+                  onClick={handleSave}
+                  className="bg-violet-950 w-52 text-white py-2 px-4 rounded-md hover:bg-violet-900 transition duration-300"
+                >
+                  Save
+                </button>
+              ) : (
+                <button
+                  onClick={handleEdit}
+                  className="bg-violet-950 text-black py-2 px-4 rounded-md hover:bg-violet-900 transition duration-300"
+                >
+                  Edit
+                </button>
+              )}
             </div>
           </div>
         </div>
-      </div>
-      <div className="flex justify-center pt-4 pb-4">
-        {editMode ? (
-          <button
-            onClick={handleSave}
-            className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
-          >
-            Save
-          </button>
-        ) : (
-          <button
-            onClick={handleEdit}
-            className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
-          >
-            Edit
-          </button>
-        )}
-      </div>
-      <div className="mb-8 bg-gray-400 rounded-3xl p-3 ">
-        <h3 className="text-lg font-semibold text-center mb-2 pl-4  pr-3">
-          Booking Details
-        </h3>
-        {loading ? (
-          <p>Loading...</p>
-        ) : bookingDetails ? (
-          <div className="flex justify-around   text-black">
-            <div className="flex justify-around">
-              <h1>Car Number: </h1>
-              <p>{bookingDetails.carNumber}</p>
-            </div>
-            <div className="flex justify-around">
-              <h1>From: </h1>
-              <p>{bookingDetails.from}</p>
-            </div>
-            <div className="flex justify-around">
-              <h1>To: </h1>
-              <p>{bookingDetails.to}</p>
-            </div>
-            <div className="flex justify-around">
-              <h1>Date: </h1>
-              <p>{bookingDetails.date}</p>
-            </div>
-          </div>
-        ) : (
-          <p className="text-center text-black">No booking details found</p>
-        )}
       </div>
     </div>
   );
