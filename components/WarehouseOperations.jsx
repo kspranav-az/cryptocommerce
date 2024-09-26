@@ -59,7 +59,7 @@ function PurchaseSection() {
   };
 
   return (
-    <div className="h-screen w-full bg-[#170E46] ">
+    <div className="h-screen w-full bg-[#170E46] text-black font-bold ">
       <div className="h-[100%] flex justify-center items-center content-evenly">
         <div className="h-[100%] w-[50%]  flex flex-col items-start p-20 pl-30 pt-10 gap-10 justify-start bg-mainbackground">
           <div className="flex gap-3 items-center justify-center">

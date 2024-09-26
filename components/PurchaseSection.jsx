@@ -95,18 +95,31 @@ function PurchaseSection() {
 
       {/* Popup */}
       {isPopupOpen && selectedProduct && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-md p-4 max-w-md w-full">
-            <h2 className="text-lg font-semibold">{selectedProduct.productname}</h2>
+        <div className="fixed mt-4 mb-4 inset-0 flex items-center justify-center z-50">
+          <div className="bg-mainbackground/90 backdrop-blur-md rounded-md p-4 max-w-[500px] w-full relative">
+            {/* Close Button */}
+            <button
+              type="button"
+              className="absolute top-2 right-2 text-red-500 text-lg"
+              onClick={handleClosePopup}
+            >
+              &times; {/* Using × for a close icon */}
+            </button>
+            <h2 className="text-lg font-semibold mb-4">
+              {selectedProduct.productname}
+            </h2>
             <img
               className="w-full h-48 object-cover rounded-lg my-2"
               src={selectedProduct.productImage}
               alt={selectedProduct.productname}
             />
             <p className="my-2">Seller: {selectedProduct.sellername}</p>
-            <p className="my-2">Price (ETH): {selectedProduct.productamounteth}</p>
-            <p className="my-2">Price (INR): {selectedProduct.productamountruppe}</p>
-
+            <p className="my-2">
+              Price (ETH): {selectedProduct.productamounteth}
+            </p>
+            <p className="my-2">
+              Price (INR): {selectedProduct.productamountruppe}
+            </p>
             <form className="flex flex-col mt-4">
               <label className="mb-2">Phone Number:</label>
               <input
@@ -128,13 +141,6 @@ function PurchaseSection() {
                 Purchase
               </button>
             </form>
-            <button
-              type="button"
-              className="text-red-500 mt-2"
-              onClick={handleClosePopup}
-            >
-              Close
-            </button>
           </div>
         </div>
       )}
