@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 
 
-const db = admin.database();
 
 
 function PurchaseSection() {
