@@ -12,7 +12,8 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
         cardbackground: "#000000",
-        navBackground: "#19104A"
+        navBackground: "#19104A",
+        mainbackground: "#180F4A",
       },
     },
   },
