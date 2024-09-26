@@ -19,7 +19,6 @@ describe("IntegratedContract", function () {
         it("should create a product", async function () {
             await integratedContract.createProduct("Product A", "Category A", "image_url", ethers.parseEther("1.0"), 5);
             const product = await integratedContract.products(1);
-
             expect(product.name).to.equal("Product A");
             expect(product.cost.toString()).to.equal(ethers.parseEther("1.0").toString());
             expect(product.stock).to.equal(0);
@@ -28,7 +27,6 @@ describe("IntegratedContract", function () {
         it("should add stock to a product", async function () {
             await integratedContract.addStock(1, 10);
             const product = await integratedContract.products(1);
-
             expect(product.stock).to.equal(10);
         });
     });

@@ -48,8 +48,9 @@ contract IntegratedContract {
     }
 
     // Mappings
-    mapping(uint256 => Product) public products; // productId to Product struct
-    mapping(uint256 => Item) public items; // itemId to Item struct
+    mapping(uint256 => Product) public products {}; // productId to Product struct
+    mapping( uint256 => mapping(uint256 => Item) ) public items {}; // itemId to Item struct
+    mapping ( uint256 => Products ) public pitems ;
     mapping(uint256 => Order) public orders; // orderId to Order struct
     mapping(uint256 => Crate) public crates; // crateId to Crate struct
     mapping(uint256 => Location[]) public crateLocations; // crateId to list of Locations
@@ -99,7 +100,8 @@ contract IntegratedContract {
         require(products[_productId].productId == _productId, "Product does not exist");
 
         for (uint256 i = 0; i < _stockToAdd; i++) {
-            items[nextItemId] = Item(nextItemId, _productId, owner, false);
+            pitems[_stockToAdd] = _productId ;
+            items[_productId][products[_productId].stock] = Item(products[_productId].stock, _productId, owner, false);
             products[_productId].stock++;
             nextItemId++;
         }
@@ -107,13 +109,29 @@ contract IntegratedContract {
         emit StockUpdated(_productId, _stockToAdd);
     }
 
-    // Order Management Functions
-    function placeOrder(uint256 _itemId) public payable {
-        require(items[_itemId].itemId == _itemId, "Item does not exist");
-        require(!items[_itemId].delivered, "Item already delivered");
-        require(products[items[_itemId].productId].cost <= msg.value, "Insufficient funds");
+    function getProduct(uint256 _productId ) public view returns ( Product memory){
+        require(products[_productId].productId == _productId, "Product does not exist");
+        return products[_productId] ;
+    }
 
-        items[_itemId].currentOwner = msg.sender;
+    function getItemNum(uint256 _productId) public returns ( uint256 ) {
+        require(products[_productId].productId == _productId, "Product does not exist");
+        return products[_productId].stock ;
+    }
+
+    function getItem(uint256 _productId , uint256 idx ) public view returns (Item memory) {
+        require(products[_productId].productId == _productId, "Product does not exist");
+        require(items[_productId][idx].itemId == idx, "Product does not exist");
+        return (items[_productId][idx]) ;
+    }
+
+    // Order Management Functions
+    function placeOrder(uint256 _productId ,uint256 _itemId) public payable {
+        require(items[_productId][_itemId].itemId == _itemId, "Item does not exist");
+        require(!items[_productId][_itemId].delivered, "Item already delivered");
+        require(products[_productId].cost <= msg.value, "Insufficient funds");
+
+        items[_productId][_itemId].currentOwner = msg.sender;
         orders[nextOrderId] = Order(nextOrderId, _itemId, msg.sender, block.timestamp);
         userOrders[msg.sender].push(nextOrderId);
 
