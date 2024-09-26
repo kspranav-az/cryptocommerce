@@ -37,7 +37,7 @@ yarn-error.log*
 next-env.d.ts
 
 cache
-
+cache/solidity-files-cache.json
 artifacts
 
-
+*.iml

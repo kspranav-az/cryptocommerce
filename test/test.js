@@ -56,9 +56,10 @@ describe("IntegratedContract", function () {
 
             await integratedContract.createCrate([1, 2, 3]);
             const crate =  await integratedContract.crates(1);
-            const ids = integratedContract.getItemIdsFromCrate(await integratedContract.nextCrateId)
             expect(crate.currentOwner).to.equal(owner.address);
-            expect(ids).to.equal(3); // Check that 3 itemIds are set
+            //const le = integratedContract.getItemId(crate.crateId,0)
+            expect(await integratedContract.getItemIdsnum( await ethers.toBigInt(crate.crateId))).to.equal(3);// Check that 3 itemIds are set
+
         });
 
         it("should deliver a crate", async function () {
