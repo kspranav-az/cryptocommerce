@@ -17,7 +17,7 @@ const navigation = [
   { name: "Trending Products", href: "/" },
 ];
 
-const Commonheader = () => {
+const WarehouseNavBar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -126,7 +126,7 @@ const connectHandler = async () => {
               </div>
 
               <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-                <div className="pr-5">
+                {/* <div className="pr-5">
                   {accounts ? (
                     <button type="button" className="nav__connect ">
                       {accounts.slice(0, 6) + "..." + accounts.slice(38, 42)}
@@ -140,7 +140,7 @@ const connectHandler = async () => {
                       Connect to your wallet
                     </button>
                   )}
-                </div>
+                </div> */}
                 {isLoggedIn ? (
                   <Link href={"/Userprofile"}>
                     <h1 className="text-xl font-semibold leading-6  text-white ">
@@ -195,7 +195,7 @@ const connectHandler = async () => {
                         </Link>
                       ))}
                     </div>
-                    <div className="text-black">
+                    {/* <div className="text-black">
                       {accounts ? (
                         <button type="button" className="nav__connect ">
                           {accounts.slice(0, 6) + "..." + accounts.slice(38, 42)}
@@ -209,7 +209,7 @@ const connectHandler = async () => {
                           Connect to your wallet
                         </button>
                       )}
-                    </div>
+                    </div> */}
                     <div className="py-6">
                       {isLoggedIn ? (
                         <Link href={"/Userprofile"}>
@@ -237,4 +237,4 @@ const connectHandler = async () => {
   );
 };
 
-export default Commonheader;
+export default WarehouseNavBar;

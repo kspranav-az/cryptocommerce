@@ -1,62 +1,143 @@
-import React from "react";
-import ProductCard from "./ProductCard";
+"use client";
+import React, { useState } from "react";
+
+import ProductCard from "@/components/ProductCard";
 
 const ProductDetails = [
   {
+    productImage: "/static/img/iphone.jpg",
     productname: "Iphone",
     productamounteth: "4.5",
     productamountruppe: "3000.0",
-    sellername: "Apple",
+    sellername: "RK Traders",
   },
-  // Add more products as needed to fill the grid
   {
-    productname: "Iphone 12",
+    productImage: "/static/img/samsung buds.jpg",
+    productname: "Samsung Buds",
     productamounteth: "3.5",
     productamountruppe: "2500.0",
-    sellername: "Apple",
+    sellername: "KK Brothers",
   },
   {
-    productname: "Iphone 13",
+    productImage: "/static/img/cosmetics1.jpg",
+    productname: "Lipstic",
     productamounteth: "5.0",
     productamountruppe: "3500.0",
-    sellername: "Apple",
+    sellername: "Balaji & Co",
   },
   {
-    productname: "Iphone 14",
+    productImage: "/static/img/saree.jpg",
+    productname: "Saree",
     productamounteth: "6.0",
     productamountruppe: "4000.0",
-    sellername: "Apple",
+    sellername: "KG Traders",
   },
   {
+    productImage: "/static/img/airpods1.jpg",
+    productname: "Airpods",
+    productamounteth: "2.0",
+    productamountruppe: "1500.0",
+    sellername: "Apple.in",
+  },
+  {
+    productImage: "/static/img/perfume1.jpg",
+    productname: "Perfume",
+    productamounteth: "3.0",
+    productamountruppe: "2200.0",
+    sellername: "ab1",
+  },
+  {
+    productImage: "/static/img/shirt1.jpg",
     productname: "Iphone SE",
     productamounteth: "2.0",
     productamountruppe: "1500.0",
-    sellername: "Apple",
+    sellername: "KK Brothers",
   },
   {
+    productImage: "/static/img/hoodie1.jpg",
     productname: "Iphone XR",
     productamounteth: "3.0",
     productamountruppe: "2200.0",
-    sellername: "Apple",
+    sellername: "RK Traders",
   },
 ];
 
 function PurchaseSection() {
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
+  const handleOpenPopup = (product) => {
+    setSelectedProduct(product); // Store the clicked product details
+    setIsPopupOpen(true); // Open the popup
+  };
+
+  const handleClosePopup = () => {
+    setIsPopupOpen(false); // Close the popup
+    setSelectedProduct(null); // Clear the selected product
+  };
+
   return (
     <section className="mt-6 m-10">
       <div className="grid grid-cols-5 gap-4">
-        {" "}
-        {/* Adjust columns as needed */}
         {ProductDetails.map((product, index) => (
-          <ProductCard
-            key={index}
-            productName={product.productname}
-            productAmountETH={product.productamounteth}
-            productAmountRuppe={product.productamountruppe}
-            sellerName={product.sellername}
-          />
+          <div key={index}>
+            <ProductCard
+              productImage={product.productImage}
+              productName={product.productname}
+              productAmountETH={product.productamounteth}
+              productAmountRuppe={product.productamountruppe}
+              sellerName={product.sellername}
+              onViewProduct={() => handleOpenPopup(product)} // Pass product to popup handler
+            />
+          </div>
         ))}
       </div>
+
+      {/* Popup */}
+      {isPopupOpen && selectedProduct && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-md p-4 max-w-md w-full">
+            <h2 className="text-lg font-semibold">{selectedProduct.productname}</h2>
+            <img
+              className="w-full h-48 object-cover rounded-lg my-2"
+              src={selectedProduct.productImage}
+              alt={selectedProduct.productname}
+            />
+            <p className="my-2">Seller: {selectedProduct.sellername}</p>
+            <p className="my-2">Price (ETH): {selectedProduct.productamounteth}</p>
+            <p className="my-2">Price (INR): {selectedProduct.productamountruppe}</p>
+
+            <form className="flex flex-col mt-4">
+              <label className="mb-2">Phone Number:</label>
+              <input
+                type="text"
+                className="border rounded-md p-2 mb-2"
+                placeholder="Enter your phone number"
+              />
+              <label className="mb-2">Address:</label>
+              <input
+                type="text"
+                className="border rounded-md p-2 mb-2"
+                placeholder="Enter your address"
+              />
+              <button
+                type="button"
+                className="bg-blue-600 text-white rounded-md p-2 mt-4"
+                onClick={handleClosePopup}
+              >
+                Purchase
+              </button>
+            </form>
+            <button
+              type="button"
+              className="text-red-500 mt-2"
+              onClick={handleClosePopup}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

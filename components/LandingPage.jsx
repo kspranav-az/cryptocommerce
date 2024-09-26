@@ -1,46 +1,44 @@
 import React from "react";
-import MainButton from "@/components/MainButton";
 import ProductCard from "@/components/ProductCard";
 import Link from "next/link";
 
 const ProductDetails = [
   {
+    productImage: "/static/img/iphone.jpg",
     productname: "Iphone",
     productamounteth: "4.5",
     productamountruppe: "3000.0",
-    sellername: "Apple",
+    sellername: "RK Traders",
   },
-  // Add more products as needed to fill the grid
   {
-    productname: "Iphone 12",
+    productImage: "/static/img/samsung buds.jpg",
+    productname: "Samsung Buds",
     productamounteth: "3.5",
     productamountruppe: "2500.0",
-    sellername: "Apple",
+    sellername: "KK Brothers",
   },
   {
-    productname: "Iphone 13",
+    productImage: "/static/img/cosmetics1.jpg",
+    productname: "Lipstic",
     productamounteth: "5.0",
     productamountruppe: "3500.0",
-    sellername: "Apple",
+    sellername: "Balaji & Co",
   },
   {
-    productname: "Iphone 14",
+    productImage: "/static/img/saree.jpg",
+    productname: "Saree",
     productamounteth: "6.0",
     productamountruppe: "4000.0",
-    sellername: "Apple",
+    sellername: "KG Traders",
   },
   {
-    productname: "Iphone SE",
+    productImage: "/static/img/airpods1.jpg",
+    productname: "Airpods",
     productamounteth: "2.0",
     productamountruppe: "1500.0",
-    sellername: "Apple",
+    sellername: "Apple.in",
   },
-  {
-    productname: "Iphone XR",
-    productamounteth: "3.0",
-    productamountruppe: "2200.0",
-    sellername: "Apple",
-  },
+  
 ];
 
 export default function Landingpage() {
@@ -62,7 +60,6 @@ export default function Landingpage() {
             <h1 className="text-2xl">
               Revolutionizing the way you buy and sell.
             </h1>
-            <MainButton buttonText={"Join Us"}></MainButton>
 
             {/* <div className=' h-10 w-40 border-2 flex items-center justify-center text-2xl' 
                         style={{ 
@@ -151,12 +148,13 @@ export default function Landingpage() {
       </section>
 
       <section class="mt-6 m-10">
-        <div className="grid grid-cols-5 gap-2">
+        <div className="grid grid-cols-5 gap-2 w-[10 rem]">
           {" "}
           {/* Adjust columns as needed */}
           {ProductDetails.map((product, index) => (
             <ProductCard
               key={index}
+              productImage={product.productImage}
               productName={product.productname}
               productAmountETH={product.productamounteth}
               productAmountRuppe={product.productamountruppe}
