@@ -1,10 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
 
-
-const db = admin.database();
-
-
 function PurchaseSection() {
   const [productID, setProductID] = useState("");
   const [rfid, setRfid] = useState("");
@@ -12,7 +8,6 @@ function PurchaseSection() {
   const [crates, setCrates] = useState([]);
   const [editingCrateIndex, setEditingCrateIndex] = useState(null);
 
-  // Simulate scanner input by detecting a product ID input.
   useEffect(() => {
     const handleKeyPress = (event) => {
       if (scannerActive && event.key === "Enter" && event.target.value !== "") {
@@ -27,16 +22,13 @@ function PurchaseSection() {
     };
   }, [scannerActive]);
 
-  // Toggle scanner active status
   const toggleScanner = () => {
     setScannerActive(!scannerActive);
   };
 
-  // Function to create a new crate or update an existing crate
   const handleCrate = () => {
     const newCrate = { productID, rfid };
     if (editingCrateIndex !== null) {
-      // Update existing crate
       const updatedCrates = [...crates];
       updatedCrates[editingCrateIndex] = newCrate;
       setCrates(updatedCrates);
@@ -67,11 +59,11 @@ function PurchaseSection() {
               <img src="/static/img/warehouse1.png" alt="crate.png" />
             </div>
             <div>
-              <h1 className="text-2xl">Create Crate</h1>
+              <h1 className="text-2xl text-white">Create Crate</h1>
             </div>
           </div>
 
-          <div className="flex flex-col justify-start w-[40%]">
+          <div className="flex flex-col justify-start w-[40%] text-white">
             <h1>ProductID</h1>
             <input
               type="text"
@@ -90,7 +82,7 @@ function PurchaseSection() {
             </button>
           </div>
 
-          <div className="flex flex-col justify-start w-[40%]">
+          <div className="flex flex-col justify-start w-[40%] text-white">
             <h1>RFID UID</h1>
             <input
               type="text"
@@ -101,7 +93,7 @@ function PurchaseSection() {
             />
           </div>
 
-          <div className="w-80 bg-blue-500 rounded-md flex items-center justify-center gap-7">
+          <div className="w-80 bg-blue-500 text-white rounded-md flex items-center justify-center gap-7">
             <button className="pl-10 " onClick={handleCrate}>
               {editingCrateIndex !== null ? "Update Crate" : "Create Crate"}
             </button>

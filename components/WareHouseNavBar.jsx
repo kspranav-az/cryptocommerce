@@ -13,8 +13,8 @@ import { getAddress } from 'ethers';
 
 
 const navigation = [
-  { name: "Explore", href: "/" },
-  { name: "Trending Products", href: "/" },
+  { name: "Tracker", href: "/Tracker" },
+  { name: "WareHouse", href: "/Warehouse" },
 ];
 
 const WarehouseNavBar = () => {

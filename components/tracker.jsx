@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers'
-const warehouses = require('C:\\Users\\Harsh\\WebstormProjects\\cryptocommerce\\public\\assets\\warehouses.json');
+import warehouses from '/public/assets/warehouses.json'
 
 
 function ProductTracker() {
