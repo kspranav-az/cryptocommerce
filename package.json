@@ -13,6 +13,7 @@
     "@emotion/styled": "^11.13.0",
     "@headlessui/react": "^2.1.8",
     "@heroicons/react": "^2.1.5",
+    "bignumber.js": "^9.1.2",
     "@mui/material": "^6.1.1",
     "chai": "^4.2.0",
     "ether": "^0.0.9",

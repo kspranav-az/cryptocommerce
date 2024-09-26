@@ -1,126 +1,94 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
-describe("E-commerce Smart Contracts with RFID", function () {
-    let ProductManagement, productManagement;
-    let OrderManagement, orderManagement;
-    let CrateManagement, crateManagement;
-    let RfidManagement, rfidManagement;
-    let owner, addr1, addr2;
+describe("IntegratedContract", function () {
+    let integratedContract;
+    let owner;
+    let addr1;
 
-    beforeEach(async function () {
-        [owner, addr1, addr2] = await ethers.getSigners();
+    before(async function () {
+        // Get the contract factory and deploy it
+        const IntegratedContract = await ethers.getContractFactory("IntegratedContract");
+        integratedContract = await IntegratedContract.deploy();
+        await integratedContract.waitForDeployment();
 
-        // Deploy ProductManagement contract
-        ProductManagement = await ethers.getContractFactory("ProductManagement");
-        productManagement = await ProductManagement.deploy();
-        await productManagement.waitForDeployment();
-
-        // Deploy OrderManagement contract
-        OrderManagement = await ethers.getContractFactory("OrderManagement");
-        orderManagement = await OrderManagement.deploy();
-        await orderManagement.waitForDeployment();
-
-        // Deploy CrateManagement contract
-        CrateManagement = await ethers.getContractFactory("CrateManagement");
-        crateManagement = await CrateManagement.deploy();
-        await crateManagement.waitForDeployment();
-
-        // Deploy RfidManagement contract
-        RfidManagement = await ethers.getContractFactory("RfidManagement");
-        rfidManagement = await RfidManagement.deploy();
-        await rfidManagement.waitForDeployment();
+        [owner, addr1] = await ethers.getSigners();
     });
 
     describe("Product Management", function () {
-        it("should allow the owner to list items", async function () {
-            await productManagement.listItem(1, "Laptop", "Electronics", "image.png", 1000, 5, 50, "RFID123");
-            const item = await productManagement.getItem(1);
+        it("should create a product", async function () {
+            await integratedContract.createProduct("Product A", "Category A", "image_url", ethers.utils.parseEther("1.0"), 5);
+            const product = await integratedContract.products(1);
 
-            expect(item.name).to.equal("Laptop");
-            expect(item.stock).to.equal(50);
+            expect(product.name).to.equal("Product A");
+            expect(product.cost).to.equal(ethers.utils.parseEther("1.0"));
+            expect(product.stock).to.equal(0);
         });
 
-        it("should allow the owner to update stock", async function () {
-            await productManagement.listItem(1, "Laptop", "Electronics", "image.png", 1000, 5, 50, "RFID123");
-            await productManagement.updateItemStock(1, 30);
-            const item = await productManagement.getItem(1);
+        it("should add stock to a product", async function () {
+            await integratedContract.addStock(1, 10);
+            const product = await integratedContract.products(1);
 
-            expect(item.stock).to.equal(30);
-        });
-
-        it("should revert if non-owner tries to list items", async function () {
-            await expect(
-                productManagement.connect(addr1).listItem(2, "Phone", "Electronics", "phone.png", 500, 4, 100, "RFID456")
-            ).to.be.revertedWith("Not authorized");
+            expect(product.stock).to.equal(10);
         });
     });
 
     describe("Order Management", function () {
-    it("should allow users to buy items", async function () {
-        await productManagement.listItem(1, "Laptop", "Electronics", "image.png", 1000, 5, 50, "RFID123");
+        it("should place an order", async function () {
+            // First, add stock to the product
+            await integratedContract.addStock(1, 1);
+            await integratedContract.placeOrder(1, { value: ethers.utils.parseEther("1.0") });
 
-        // Check the item exists and stock is available
-        const item = await productManagement.getItem(1);
-        console.log("Item stock before purchase:", item.stock.toString());
+            const order = await integratedContract.orders(1);
+            expect(order.buyer).to.equal(owner.address);
+            expect(order.itemId).to.equal(1);
+        });
 
-        // Buy the item (ensure sufficient ETH is sent)
-        await orderManagement.connect(addr1).buyItem(1, { value: ethers.parseEther("1.0") });
-
-        const order = await orderManagement.orders(addr1.address, 1);
-        expect(order.item.id).to.equal(1);
+        it("should retrieve user orders", async function () {
+            const userOrders = await integratedContract.getUserOrders(owner.address);
+            expect(userOrders.length).to.equal(1);
+        });
     });
-
-    it("should reduce stock after an item is bought", async function () {
-        await productManagement.listItem(1, "Laptop", "Electronics", "image.png", 1000, 5, 50, "RFID123");
-        await orderManagement.connect(addr1).buyItem(1, { value: ethers.parseEther("1.0") });
-
-        const item = await productManagement.getItem(1);
-        console.log("Item stock after purchase:", item.stock.toString());
-        expect(item.stock).to.equal(49);
-    });
-});
-
 
     describe("Crate Management", function () {
-        it("should allow owner to create a crate", async function () {
-            await productManagement.listItem(1, "Laptop", "Electronics", "image.png", 1000, 5, 50, "RFID123");
-            await productManagement.listItem(2, "Laptop", "Electronics", "image.png", 1000, 5, 50, "RFID123");
-            await productManagement.listItem(3, "Laptop", "Electronics", "image.png", 1000, 5, 50, "RFID123");
-            const crateId = await crateManagement.createCrate([1, 2, 3], "CrateRFID123");
-            // const crate = await crateManagement.crates(crateId);
-            expect(crateId).to.equal(3);
+        it("should create a crate", async function () {
+            await integratedContract.createCrate([1, 2, 3]);
+            const crate = await integratedContract.crates(1);
+
+            // Ensure the crate is properly created and itemIds are set
+            expect(crate.currentOwner).to.equal(owner.address);
+            expect(crate.itemIds.length).to.equal(3); // Check that 3 itemIds are set
         });
 
-        it("should allow owner to ship a crate", async function () {
-            await crateManagement.createCrate([1, 2, 3], "CrateRFID123");
-            await crateManagement.shipCrate(1);
+        it("should deliver a crate", async function () {
+            await integratedContract.deliverCrate(1);
+            const crate = await integratedContract.crates(1);
 
-            const crate = await crateManagement.crates(1);
-            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-            expect(crate.shipped).to.be.true;
-        });
-
-        it("should revert if trying to ship an already shipped crate", async function () {
-            await crateManagement.createCrate([1, 2, 3], "CrateRFID123");
-            await crateManagement.shipCrate(1);
-
-            await expect(crateManagement.shipCrate(1)).to.be.revertedWith("Crate already shipped");
+            expect(crate.delivered).to.equal(true);
         });
     });
 
-    describe("RFID Management", function () {
-        it("should allow owner to update RFID location", async function () {
-            await rfidManagement.updateRfidLocation("RFID123", "Warehouse", 1);
+    describe("Location Management", function () {
+        it("should update crate location", async function () {
+            // Create a crate before delivering to ensure it's still open
+            await integratedContract.createCrate([1, 2, 3]); // Ensure crate is open
+            await integratedContract.updateLocation(2, "12.3456", "78.9101"); // Update location
+            const locations = await integratedContract.getCrateLocationHistory(2);
 
-            const rfidData = await rfidManagement.getRfidData("RFID123");
-            expect(rfidData.location).to.equal("Warehouse");
+            expect(locations.length).to.be.greaterThan(0);
+            expect(locations[0].latitude).to.equal("12.3456");
+            expect(locations[0].longitude).to.equal("78.9101");
         });
+    });
 
-        it("should revert if non-owner tries to update RFID location", async function () {
-            await expect(
-                rfidManagement.connect(addr1).updateRfidLocation("RFID123", "Warehouse", 1)
-            ).to.be.revertedWith("Not authorized");
+    describe("Financial Management", function () {
+        it("should allow the owner to withdraw funds", async function () {
+            // Assuming there are funds to withdraw
+            const initialBalance = await ethers.provider.getBalance(owner.address);
+            await integratedContract.withdraw();
+            const finalBalance = await ethers.provider.getBalance(owner.address);
+
+            expect(finalBalance).to.be.greaterThan(initialBalance);
         });
     });
 });

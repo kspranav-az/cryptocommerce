@@ -4,28 +4,62 @@ pragma solidity ^0.8.9;
 import "./CrateManagement.sol";
 
 contract RfidManagement is CrateManagement {
-    struct RfidData {
-        string location;
-        uint timestamp;
-        uint256 crateId; // Track associated crate ID
+    struct Location {
+        string latitude;
+        string longitude;
+        uint256 timestamp;
     }
 
-    mapping(string => RfidData) public rfidRecords; // RFID records tracking locations
+    mapping(uint256 => Location[]) public crateLocations; // Mapping of crate IDs to their location history
 
-    event RfidLocationUpdated(string rfidTag, string location, uint256 crateId);
+    event LocationUpdated(uint256 crateId, string latitude, string longitude, uint256 timestamp);
+    event CrateOpened(uint256 crateId, string sensorId, uint256 timestamp);
+    event CrateDetected(uint256 crateId, string sensorId, uint256 timestamp);
 
-    // Update RFID location for an item or crate
-    function updateRfidLocation(string memory rfidTag, string memory location, uint256 crateId) public onlyOwner {
-        require(bytes(rfidTag).length > 0, "Invalid RFID tag");
-        require(bytes(location).length > 0, "Invalid location");
+    // Function to update the location of a crate
+    function updateLocation(
+        uint256 _crateId,
+        string memory _latitude,
+        string memory _longitude
+    ) public {
+        require(crates[_crateId].crateId == _crateId, "Crate does not exist");
+        require(crates[_crateId].delivered == false, "Crate already delivered");
 
-        rfidRecords[rfidTag] = RfidData(location, block.timestamp, crateId);
-        emit RfidLocationUpdated(rfidTag, location, crateId);
+        Location memory newLocation = Location(_latitude, _longitude, block.timestamp);
+        crateLocations[_crateId].push(newLocation);
+
+        emit LocationUpdated(_crateId, _latitude, _longitude, block.timestamp);
     }
 
-    // Retrieve RFID data (location, timestamp, crateId)
-    function getRfidData(string memory rfidTag) public view returns (string memory location, uint timestamp, uint256 crateId) {
-        RfidData memory data = rfidRecords[rfidTag];
-        return (data.location, data.timestamp, data.crateId);
+    // Function to log crate being detected by a sensor
+    function detectCrate(uint256 _crateId, string memory _sensorId) public {
+        require(crates[_crateId].crateId == _crateId, "Crate does not exist");
+        require(crates[_crateId].delivered == false, "Crate already delivered");
+
+        emit CrateDetected(_crateId, _sensorId, block.timestamp);
+    }
+
+    // Function to log crate opening event
+    function openCrate(uint256 _crateId, string memory _sensorId) public {
+        require(crates[_crateId].crateId == _crateId, "Crate does not exist");
+        require(crates[_crateId].closed == true, "Crate is not sealed yet");
+
+        crates[_crateId].closed = false; // Unseal the crate
+
+        emit CrateOpened(_crateId, _sensorId, block.timestamp);
+    }
+
+    // Get location history of a crate
+    function getCrateLocationHistory(uint256 _crateId) public view returns (Location[] memory) {
+        require(crates[_crateId].crateId == _crateId, "Crate does not exist");
+        return crateLocations[_crateId];
+    }
+
+    // Get the latest location of a crate
+    function getLatestLocation(uint256 _crateId) public view returns (Location memory) {
+        require(crates[_crateId].crateId == _crateId, "Crate does not exist");
+        require(crateLocations[_crateId].length > 0, "No location data available");
+
+        return crateLocations[_crateId][crateLocations[_crateId].length - 1];
     }
 }

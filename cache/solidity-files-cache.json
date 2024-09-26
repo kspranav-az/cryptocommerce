@@ -38,8 +38,8 @@
       ]
     },
     "E:\\cryptocommerce\\contracts\\CrateManagement.sol": {
-      "lastModificationDate": 1727290531988,
-      "contentHash": "0f75b2e54cbb61cad2f34336f5db8c2e",
+      "lastModificationDate": 1727323960479,
+      "contentHash": "a5bb884d377115b12d2ccc5098842455",
       "sourceName": "contracts/CrateManagement.sol",
       "solcConfig": {
         "version": "0.8.27",
@@ -76,8 +76,8 @@
       ]
     },
     "E:\\cryptocommerce\\contracts\\OrderManagement.sol": {
-      "lastModificationDate": 1727270490965,
-      "contentHash": "c717b13e0d7263e21b9cd711252c1be2",
+      "lastModificationDate": 1727319325997,
+      "contentHash": "f91ecf5ed82328c146274edb40e0ac7d",
       "sourceName": "contracts/OrderManagement.sol",
       "solcConfig": {
         "version": "0.8.27",
@@ -114,8 +114,8 @@
       ]
     },
     "E:\\cryptocommerce\\contracts\\ProductManagement.sol": {
-      "lastModificationDate": 1727270444809,
-      "contentHash": "422c42aaf18e5f29e094b7399cc93bd4",
+      "lastModificationDate": 1727318859472,
+      "contentHash": "ec2d4014f6a741fb8524805a862a4d72",
       "sourceName": "contracts/ProductManagement.sol",
       "solcConfig": {
         "version": "0.8.27",
@@ -150,8 +150,8 @@
       ]
     },
     "E:\\cryptocommerce\\contracts\\RfidManagement.sol": {
-      "lastModificationDate": 1727279941148,
-      "contentHash": "7e06aa5dfef3a873795b0752e52727f1",
+      "lastModificationDate": 1727323793117,
+      "contentHash": "e146a95df93a5d180bdea6da57e13923",
       "sourceName": "contracts/RfidManagement.sol",
       "solcConfig": {
         "version": "0.8.27",
@@ -185,6 +185,42 @@
       ],
       "artifacts": [
         "RfidManagement"
+      ]
+    },
+    "E:\\cryptocommerce\\contracts\\IntegratedContract.sol": {
+      "lastModificationDate": 1727323651242,
+      "contentHash": "029efec112405298b1420a9a1a50a50a",
+      "sourceName": "contracts/IntegratedContract.sol",
+      "solcConfig": {
+        "version": "0.8.27",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.9"
+      ],
+      "artifacts": [
+        "IntegratedContract"
       ]
     }
   }
