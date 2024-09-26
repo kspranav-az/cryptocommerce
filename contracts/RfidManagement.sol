@@ -42,9 +42,9 @@ contract RfidManagement is CrateManagement {
     // Function to log crate opening event
     function openCrate(uint256 _crateId, string memory _sensorId) public {
         require(crates[_crateId].crateId == _crateId, "Crate does not exist");
-        require(crates[_crateId].sealed == true, "Crate is not sealed yet");
+        require(crates[_crateId].closed == true, "Crate is not sealed yet");
 
-        crates[_crateId].sealed = false; // Unseal the crate
+        crates[_crateId].closed = false; // Unseal the crate
 
         emit CrateOpened(_crateId, _sensorId, block.timestamp);
     }

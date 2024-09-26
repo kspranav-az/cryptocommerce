@@ -36,7 +36,7 @@ contract IntegratedContract {
         uint256 crateId;
         uint256[] itemIds;
         address currentOwner;
-        bool sealed;
+        bool closed;
         bool delivered;
     }
 
@@ -168,9 +168,9 @@ contract IntegratedContract {
 
     function openCrate(uint256 _crateId, string memory _sensorId) public {
         require(crates[_crateId].crateId == _crateId, "Crate does not exist");
-        require(crates[_crateId].sealed, "Crate is not sealed");
+        require(crates[_crateId].closed, "Crate is not sealed");
 
-        crates[_crateId].sealed = false;
+        crates[_crateId].closed = false;
         emit CrateOpened(_crateId, _sensorId);
     }
 

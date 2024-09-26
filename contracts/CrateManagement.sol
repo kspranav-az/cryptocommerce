@@ -8,7 +8,7 @@ contract CrateManagement is OrderManagement {
         uint256 crateId; // Unique ID for the crate
         string crateRFID; // RFID tag for the crate
         address warehouse; // Warehouse responsible for this crate
-        bool sealed; // Status indicating if the crate is sealed
+        bool closed; // Status indicating if the crate is sealed
         bool delivered; // Delivery status
         uint256[] itemIds; // List of item IDs in this crate
     }
@@ -28,11 +28,11 @@ contract CrateManagement is OrderManagement {
     }
 
     // Create a new crate
-    function createCrate(string memory _crateRFID) public onlyWarehouse {
+    function createCrate(string memory _crateRFID , uint256[] memory items ) public onlyWarehouse {
         require(rfidToCrateId[_crateRFID] == 0, "RFID already in use");
 
         uint256 crateId = uint256(keccak256(abi.encodePacked(block.timestamp, _crateRFID, nextCrateId)));
-        Crate memory newCrate = Crate(crateId, _crateRFID, msg.sender, false, false, new uint256 );
+        Crate memory newCrate = Crate(crateId, _crateRFID, msg.sender, false, false , items );
         crates[crateId] = newCrate;
         rfidToCrateId[_crateRFID] = crateId;
 
@@ -45,7 +45,7 @@ contract CrateManagement is OrderManagement {
     function addItemToCrate(uint256 _crateId, uint256 _itemId) public onlyWarehouse {
         Crate storage crate = crates[_crateId];
         require(crate.crateId == _crateId, "Crate does not exist");
-        require(!crate.sealed, "Crate is already sealed");
+        require(!crate.closed, "Crate is already sealed");
 
         Item storage item = items[_itemId];
         require(item.itemId == _itemId, "Item does not exist");
@@ -61,10 +61,10 @@ contract CrateManagement is OrderManagement {
     function sealCrate(uint256 _crateId) public onlyWarehouse {
         Crate storage crate = crates[_crateId];
         require(crate.crateId == _crateId, "Crate does not exist");
-        require(!crate.sealed, "Crate is already sealed");
+        require(!crate.closed, "Crate is already sealed");
         require(crate.itemIds.length > 0, "Crate must contain at least one item");
 
-        crate.sealed = true;
+        crate.closed = true;
 
         emit CrateSealed(_crateId);
     }
@@ -73,7 +73,7 @@ contract CrateManagement is OrderManagement {
     function deliverCrate(uint256 _crateId) public onlyOwner {
         Crate storage crate = crates[_crateId];
         require(crate.crateId == _crateId, "Crate does not exist");
-        require(crate.sealed, "Crate is not sealed");
+        require(crate.closed, "Crate is not sealed");
         require(!crate.delivered, "Crate already delivered");
 
         // Mark all items in the crate as delivered
