@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
-import MainButton from "./MainButton";
+
+import ProductCard from "@/components/ProductCard";
 
 const ProductDetails = [
   {
@@ -62,48 +63,50 @@ const ProductDetails = [
 ];
 
 function PurchaseSection() {
-const ProductCard = ({
-  productName,
-  productAmountETH,
-  productAmountRuppe,
-  sellerName,
-}) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
-  const handleOpenPopup = () => {
-    setIsPopupOpen(true);
+  const handleOpenPopup = (product) => {
+    setSelectedProduct(product); // Store the clicked product details
+    setIsPopupOpen(true); // Open the popup
   };
 
   const handleClosePopup = () => {
-    setIsPopupOpen(false);
+    setIsPopupOpen(false); // Close the popup
+    setSelectedProduct(null); // Clear the selected product
   };
 
   return (
     <section className="mt-6 m-10">
       <div className="grid grid-cols-5 gap-4">
-        {" "}
-        {/* Adjust columns as needed */}
         {ProductDetails.map((product, index) => (
-          <ProductCard
-            key={index}
-            productName={product.productname}
-            productAmountETH={product.productamounteth}
-            productAmountRuppe={product.productamountruppe}
-            sellerName={product.sellername}
-          />
+          <div key={index}>
+            <ProductCard
+              productImage={product.productImage}
+              productName={product.productname}
+              productAmountETH={product.productamounteth}
+              productAmountRuppe={product.productamountruppe}
+              sellerName={product.sellername}
+              onViewProduct={() => handleOpenPopup(product)} // Pass product to popup handler
+            />
+          </div>
         ))}
       </div>
 
       {/* Popup */}
-      {isPopupOpen && (
+      {isPopupOpen && selectedProduct && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-md p-4 max-w-md w-full">
-            <h2 className="text-lg font-semibold">{productName}</h2>
+            <h2 className="text-lg font-semibold">{selectedProduct.productname}</h2>
             <img
               className="w-full h-48 object-cover rounded-lg my-2"
-              src="/static/img/iphone.jpg"
-              alt={productName}
+              src={selectedProduct.productImage}
+              alt={selectedProduct.productname}
             />
+            <p className="my-2">Seller: {selectedProduct.sellername}</p>
+            <p className="my-2">Price (ETH): {selectedProduct.productamounteth}</p>
+            <p className="my-2">Price (INR): {selectedProduct.productamountruppe}</p>
+
             <form className="flex flex-col mt-4">
               <label className="mb-2">Phone Number:</label>
               <input
@@ -122,7 +125,7 @@ const ProductCard = ({
                 className="bg-blue-600 text-white rounded-md p-2 mt-4"
                 onClick={handleClosePopup}
               >
-                Selling It
+                Purchase
               </button>
             </form>
             <button
@@ -135,8 +138,8 @@ const ProductCard = ({
           </div>
         </div>
       )}
-    </div>
+    </section>
   );
-};
+}
 
-export default ProductCard;
+export default PurchaseSection;

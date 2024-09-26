@@ -1,5 +1,4 @@
 import React from "react";
-import MainButton from "@/components/MainButton";
 import ProductCard from "@/components/ProductCard";
 import Link from "next/link";
 

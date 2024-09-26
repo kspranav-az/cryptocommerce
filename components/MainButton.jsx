@@ -1,11 +1,20 @@
 "use client";
 import React from "react";
 
-const buyHandler = async () => {
-  console.log("buying....");
-};
+const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
-const MainButton = ({ buttonText, Href }) => {
+  const handleOpenPopup = (product) => {
+    setSelectedProduct(product); // Store the clicked product details
+    setIsPopupOpen(true); // Open the popup
+  };
+
+  const handleClosePopup = () => {
+    setIsPopupOpen(false); // Close the popup
+    setSelectedProduct(null); // Clear the selected product
+  };
+
+const MainButton = ({ buttonText, PRoduct }) => {
   return (
     <button
       style={{
@@ -22,7 +31,7 @@ const MainButton = ({ buttonText, Href }) => {
         position: "relative",
         backdropFilter: "blur(10px)", // Apply background blur behind the button
       }}
-      onClick={buyHandler}
+      onClick={handleOpenPopup(PRoduct)}
     >
       <div
         style={{
@@ -36,7 +45,9 @@ const MainButton = ({ buttonText, Href }) => {
       >
         {buttonText}
       </div>
+
     </button>
+    
   );
 };
 
