@@ -5,31 +5,34 @@ const ProductBuyModal = ({ isOpen, onClose, product }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-      <div className="bg-white rounded-lg p-6 shadow-lg max-w-lg w-full">
+    <div className="fixed mt-4 mb-4 bg-mainbackground/90 inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+      <div className="bg-mainbackground/90 rounded-md p-6 shadow-lg text-black max-w-[500px] ">
         <h2 className="text-xl font-bold mb-4">{product.productName}</h2>
         <img
           className="w-full h-48 object-cover rounded-lg mb-4"
           src="/static/img/iphone.jpg" // Update this to dynamically receive product image if needed
           alt={product.productName}
         />
-        <p className="text-lg">Price: {product.productAmountETH} ETH</p>
-        <p className="text-lg">
+        <p className="text-lg text-black">
+          Price: {product.productAmountETH} ETH
+        </p>
+        <p className="text-lg text-black">
           Price in Rupees: ${product.productAmountRuppe}
         </p>
-        <p className="mt-2 text-sm text-gray-600">
-          Seller: {product.sellerName}
-        </p>
+        <p className="mt-2 text-sm text-black">Seller: {product.sellerName}</p>
 
         <div className="mt-4">
-          <label className="block mb-2 text-sm font-semibold" htmlFor="phone">
+          <label
+            className="block mb-2  text-black text-sm font-semibold"
+            htmlFor="phone"
+          >
             Phone Number:
           </label>
           <input
             type="text"
             id="phone"
             placeholder="Enter your phone number"
-            className="w-full border border-gray-300 rounded p-2 mb-4"
+            className="w-full border text-black border-gray-300 rounded p-2 mb-4"
           />
           <label className="block mb-2 text-sm font-semibold" htmlFor="address">
             Address:
