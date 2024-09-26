@@ -1,7 +1,8 @@
-"use client";
-import React, { useState } from "react";
-
-import ProductCard from "@/components/ProductCard";
+"use client"
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import ProductCard from '@/components/ProductCard';
+import ThankYouPage from '@/components/thank.jsx';
 
 const ProductDetails = [
   {
@@ -65,24 +66,31 @@ const ProductDetails = [
 function PurchaseSection() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasPurchased, setHasPurchased] = useState(false);
+  const router = useRouter();
 
   const handleOpenPopup = (product) => {
-    setSelectedProduct(product); // Store the clicked product details
-    setIsPopupOpen(true); // Open the popup
+    setSelectedProduct(product);
+    setIsPopupOpen(true);
   };
-  const buyHandler = async () => {
-    const signer = await provider.getSigner()
-
-    // Buy item...
-    let transaction = await ProductTransactions.connect(signer).buy(item.id, { value: item.cost })
-    await transaction.wait()
-
-    setHasBought(true)
-  }
 
   const handleClosePopup = () => {
-    setIsPopupOpen(false); // Close the popup
-    setSelectedProduct(null); // Clear the selected product
+    setIsPopupOpen(false);
+    setSelectedProduct(null);
+  };
+
+  const buyHandler = async () => {
+    setIsLoading(true);
+    // Simulate purchase processing
+    setTimeout(() => {
+      setIsLoading(false);
+      setHasPurchased(true);
+      // Redirect to User page after 3 seconds
+      setTimeout(() => {
+        router.push('/User');
+      }, 3000);
+    }, 2000); // Simulate a 2-second purchase process
   };
 
   return (
@@ -96,60 +104,68 @@ function PurchaseSection() {
               productAmountETH={product.productamounteth}
               productAmountRuppe={product.productamountruppe}
               sellerName={product.sellername}
-              onViewProduct={() => handleOpenPopup(product)} // Pass product to popup handler
+              onViewProduct={() => handleOpenPopup(product)}
             />
           </div>
         ))}
       </div>
 
-      {/* Popup */}
       {isPopupOpen && selectedProduct && (
         <div className="fixed mt-4 mb-4 inset-0 flex items-center justify-center z-50">
           <div className="bg-mainbackground/90 backdrop-blur-md rounded-md p-4 max-w-[500px] w-full relative">
-            {/* Close Button */}
             <button
               type="button"
               className="absolute top-2 right-2 text-red-500 text-lg"
               onClick={handleClosePopup}
             >
-              &times; {/* Using × for a close icon */}
+              &times;
             </button>
-            <h2 className="text-lg font-semibold mb-4">
-              {selectedProduct.productname}
-            </h2>
-            <img
-              className="w-full h-48 object-cover rounded-lg my-2"
-              src={selectedProduct.productImage}
-              alt={selectedProduct.productname}
-            />
-            <p className="my-2">Seller: {selectedProduct.sellername}</p>
-            <p className="my-2">
-              Price (ETH): {selectedProduct.productamounteth}
-            </p>
-            <p className="my-2">
-              Price (INR): {selectedProduct.productamountruppe}
-            </p>
-            <form className="flex flex-col mt-4">
-              <label className="mb-2">Phone Number:</label>
-              <input
-                type="text"
-                className="border rounded-md p-2 mb-2"
-                placeholder="Enter your phone number"
-              />
-              <label className="mb-2">Address:</label>
-              <input
-                type="text"
-                className="border rounded-md p-2 mb-2"
-                placeholder="Enter your address"
-              />
-              <button
-                type="button"
-                className="bg-blue-600 text-white rounded-md p-2 mt-4"
-                onClick={handleClosePopup}
-              >
-                Purchase
-              </button>
-            </form>
+            {isLoading ? (
+              <div className="flex flex-col items-center justify-center">
+                <p>Processing your purchase...</p>
+              </div>
+            ) : hasPurchased ? (
+              <ThankYouPage />
+            ) : (
+              <>
+                <h2 className="text-lg font-semibold mb-4">
+                  {selectedProduct.productname}
+                </h2>
+                <img
+                  className="w-full h-48 object-cover rounded-lg my-2"
+                  src={selectedProduct.productImage}
+                  alt={selectedProduct.productname}
+                />
+                <p className="my-2">Seller: {selectedProduct.sellername}</p>
+                <p className="my-2">
+                  Price (ETH): {selectedProduct.productamounteth}
+                </p>
+                <p className="my-2">
+                  Price (INR): {selectedProduct.productamountruppe}
+                </p>
+                <form className="flex flex-col mt-4">
+                  <label className="mb-2">Phone Number:</label>
+                  <input
+                    type="text"
+                    className="border rounded-md p-2 mb-2"
+                    placeholder="Enter your phone number"
+                  />
+                  <label className="mb-2">Address:</label>
+                  <input
+                    type="text"
+                    className="border rounded-md p-2 mb-2"
+                    placeholder="Enter your address"
+                  />
+                  <button
+                    type="button"
+                    className="bg-blue-600 text-white rounded-md p-2 mt-4"
+                    onClick={buyHandler}
+                  >
+                    Purchase
+                  </button>
+                </form>
+              </>
+            )}
           </div>
         </div>
       )}

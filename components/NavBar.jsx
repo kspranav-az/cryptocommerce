@@ -156,6 +156,7 @@ const connectHandler = async () => {
                   </button>
                 )}
               </div>
+              
             </nav>
             <Dialog
               as="div"
