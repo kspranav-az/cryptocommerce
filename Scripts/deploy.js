@@ -26,6 +26,13 @@ async function main(){
 
     console.log('Deployed All the contracts')
 
+    await integratedContract.createProduct("Product A", "Category A", "../static/img/headset2.jpg", ethers.parseEther("1.0"), 5);
+    await integratedContract.createProduct("Product B", "Category B", "../static/img/hoodie1.jpg", ethers.parseEther("1.0"), 5);
+    await integratedContract.createProduct("Product C", "Category C", "../static/img/samsung buds.jpg", ethers.parseEther("1.0"), 5);
+    await integratedContract.createProduct("Product D", "Category D", "../static/img/shirt1.jpg", ethers.parseEther("1.0"), 5);
+    await integratedContract.createProduct("Product E", "Category E", "..static/img/perfume1.jpg", ethers.parseEther("1.0"), 5);
+    await integratedContract.createProduct("Product F", "Category F", "../static/img/saree.jpg", ethers.parseEther("1.0"), 5);
+
 }
 
 main().catch((err) => {

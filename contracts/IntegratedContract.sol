@@ -48,9 +48,9 @@ contract IntegratedContract {
     }
 
     // Mappings
-    mapping(uint256 => Product) public products {}; // productId to Product struct
-    mapping( uint256 => mapping(uint256 => Item) ) public items {}; // itemId to Item struct
-    mapping ( uint256 => Products ) public pitems ;
+    mapping(uint256 => Product) public products ; // productId to Product struct
+    mapping( uint256 => mapping(uint256 => Item) ) public items ; // itemId to Item struct
+    mapping(uint256 => Item) public pitems ;
     mapping(uint256 => Order) public orders; // orderId to Order struct
     mapping(uint256 => Crate) public crates; // crateId to Crate struct
     mapping(uint256 => Location[]) public crateLocations; // crateId to list of Locations
@@ -100,8 +100,8 @@ contract IntegratedContract {
         require(products[_productId].productId == _productId, "Product does not exist");
 
         for (uint256 i = 0; i < _stockToAdd; i++) {
-            pitems[_stockToAdd] = _productId ;
             items[_productId][products[_productId].stock] = Item(products[_productId].stock, _productId, owner, false);
+            pitems[_stockToAdd] = items[_productId][products[_productId].stock] ;
             products[_productId].stock++;
             nextItemId++;
         }
@@ -114,7 +114,7 @@ contract IntegratedContract {
         return products[_productId] ;
     }
 
-    function getItemNum(uint256 _productId) public returns ( uint256 ) {
+    function getItemNum(uint256 _productId) public view returns ( uint256 ) {
         require(products[_productId].productId == _productId, "Product does not exist");
         return products[_productId].stock ;
     }
@@ -169,8 +169,8 @@ contract IntegratedContract {
         crates[_crateId].delivered = true;
         for (uint256 i = 0; i < crates[_crateId].itemIds.length; i++) {
             uint256 itemId = crates[_crateId].itemIds[i];
-            items[itemId].delivered = true;
-            emit ProductDelivered(itemId, items[itemId].productId);
+            items[pitems[itemId].productId][itemId].delivered = true;
+            emit ProductDelivered(itemId, pitems[itemId].productId);
         }
 
         emit CrateDelivered(_crateId);

@@ -35,7 +35,7 @@ describe("IntegratedContract", function () {
         it("should place an order", async function () {
 
             await integratedContract.addStock(1, 1); // Ensure there's stock to sell
-            await integratedContract.placeOrder(1, { value: ethers.parseEther("1.0") }); //at the place of 1.0 ether value to be placed
+            await integratedContract.placeOrder(1, 1 , { value: ethers.parseEther("1.0") }); //at the place of 1.0 ether value to be placed
 
             const order = await integratedContract.orders(1);
             expect(order.buyer).to.equal(owner.address);
@@ -87,7 +87,7 @@ describe("IntegratedContract", function () {
         await integratedContract.createProduct("Product A", "Category A", "image_url", ethers.parseEther("1.0"), 5);
         // Ensure stock is available
         await integratedContract.addStock(2, 1); // Make sure there's stock
-        await integratedContract.placeOrder(4, { value: ethers.parseEther("1.0") }); // Place an order
+        await integratedContract.placeOrder(2, 0 , { value: ethers.parseEther("1.0") }); // Place an order
 
         const initialBalance = await ethers.provider.getBalance(owner.address);
         await integratedContract.withdraw();
