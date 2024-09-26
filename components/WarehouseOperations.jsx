@@ -1,6 +1,10 @@
 "use client";
 import React, { useState, useEffect } from "react";
 
+
+const db = admin.database();
+
+
 function PurchaseSection() {
   const [productID, setProductID] = useState("");
   const [rfid, setRfid] = useState("");

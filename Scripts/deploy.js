@@ -7,7 +7,10 @@ const token = (n) => {
 
 async function main(){
     const [deployer] = await hre.ethers.getSigners()
-
+    const integratedContract = await ethers.getContractFactory("IntegratedContract");
+    const IntegratedContract = await integratedContract.deploy();
+    await IntegratedContract.waitForDeployment();
+    //
     // const accessControl = await ethers.getContractFactory("AccessControl");
     // const rfidManagement = await ethers.getContractFactory("RfidManagement");
     // const orderManagement = await ethers.getContractFactory("OrderManagement");
@@ -20,9 +23,6 @@ async function main(){
     // await RfidManagement.waitForDeployment();
     // await OrderManagement.waitForDeployment();
     // await CrateManagement.waitForDeployment();
-
-    const integratedContract = await ethers.getContractFactory("IntegratedContract");
-    await integratedContract.deploy();
 
     console.log('Deployed All the contracts')
 

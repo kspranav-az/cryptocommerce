@@ -1,10 +1,25 @@
 import React, { useState, useEffect } from 'react';
+import { ethers } from 'ethers'
+const warehouses = require('C:\\Users\\Harsh\\WebstormProjects\\cryptocommerce\\public\\assets\\warehouses.json');
+
 
 function ProductTracker() {
-const [productID, setProductID] = useState("");
-const [status, setStatus] = useState(null); 
-const [tampering, setTampering] = useState(false); 
-const [showPopup, setShowPopup] = useState(false); 
+    const [productID, setProductID] = useState("");
+    const [status, setStatus] = useState(null);
+    const [tampering, setTampering] = useState(false);
+    const [showPopup, setShowPopup] = useState(false);
+    const currLoc = useState(false);
+
+
+    const fetchDetails = async () => {
+        var tempAdd = await integratedContract.updateLocation()
+        if(integratedContract.upgradeLocation !== warehouses[0].location ){
+            setTampering( true);
+        }
+        else{
+            setTampering(false);
+        }
+    }
 
 const trackProduct = () => {
 const statuses = ['localWarehouse', 'stateWarehouse', 'secondLocalWarehouse', 'delivered'];
