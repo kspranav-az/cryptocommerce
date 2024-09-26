@@ -109,13 +109,13 @@ function PurchaseSection() {
           </div>
         </div>
 
-        <div className="h-[100%] w-[50%] border-2 flex flex-col items-start p-20 pl-30 gap-10 justify-start bg-mainbackground">
-          <div className="h-[75%] w-[85%]  rounded-md overflow-auto">
+        <div className="h-[100%] w-[50%] border-1.5 border-white/80  p-10  justify-start bg-mainbackground">
+          <div className="h-[75%] w-[85%] grid grid-cols-4 gap-x-1.5 gap-y-1.5 rounded-md  overflow-y-auto grid-flow-row border-white/40 ">
             {crates.map((crate, index) => (
               <div
                 key={index}
                 onClick={() => selectCrate(index)}
-                className="w-64 h-64 flex flex-col justify-center align-top"
+                className="flex flex-col justify-center align-top"
               >
                 <img
                   src="static/img/crate.png"
