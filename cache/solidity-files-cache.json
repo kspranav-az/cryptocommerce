@@ -188,8 +188,8 @@
       ]
     },
     "E:\\cryptocommerce\\contracts\\IntegratedContract.sol": {
-      "lastModificationDate": 1727323651242,
-      "contentHash": "029efec112405298b1420a9a1a50a50a",
+      "lastModificationDate": 1727327960148,
+      "contentHash": "3bf1946e18dc34f49a731e7050c846b6",
       "sourceName": "contracts/IntegratedContract.sol",
       "solcConfig": {
         "version": "0.8.27",

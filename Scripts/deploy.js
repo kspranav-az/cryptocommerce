@@ -8,18 +8,21 @@ const token = (n) => {
 async function main(){
     const [deployer] = await hre.ethers.getSigners()
 
-    const accessControl = await ethers.getContractFactory("AccessControl");
-    const rfidManagement = await ethers.getContractFactory("RfidManagement");
-    const orderManagement = await ethers.getContractFactory("OrderManagement");
-    const crateManagement = await ethers.getContractFactory("CrateManagement");
-    const AccessControl = await accessControl.deploy();
-    const RfidManagement = await rfidManagement.deploy();
-    const OrderManagement = await orderManagement.deploy();
-    const CrateManagement= await crateManagement.deploy();
-    await AccessControl.waitForDeployment();
-    await RfidManagement.waitForDeployment();
-    await OrderManagement.waitForDeployment();
-    await CrateManagement.waitForDeployment();
+    // const accessControl = await ethers.getContractFactory("AccessControl");
+    // const rfidManagement = await ethers.getContractFactory("RfidManagement");
+    // const orderManagement = await ethers.getContractFactory("OrderManagement");
+    // const crateManagement = await ethers.getContractFactory("CrateManagement");
+    // const AccessControl = await accessControl.deploy();
+    // const RfidManagement = await rfidManagement.deploy();
+    // const OrderManagement = await orderManagement.deploy();
+    // const CrateManagement= await crateManagement.deploy();
+    // await AccessControl.waitForDeployment();
+    // await RfidManagement.waitForDeployment();
+    // await OrderManagement.waitForDeployment();
+    // await CrateManagement.waitForDeployment();
+
+    const integratedContract = await ethers.getContractFactory("IntegratedContract");
+    await integratedContract.deploy();
 
     console.log('Deployed All the contracts')
 

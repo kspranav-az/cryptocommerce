@@ -35,6 +35,7 @@ describe("IntegratedContract", function () {
 
     describe("Order Management", function () {
         it("should place an order", async function () {
+
             await integratedContract.addStock(1, 1); // Ensure there's stock to sell
             await integratedContract.placeOrder(1, { value: ethers.parseEther("1.0") }); //at the place of 1.0 ether value to be placed
 
@@ -51,11 +52,13 @@ describe("IntegratedContract", function () {
 
     describe("Crate Management", function () {
         it("should create a crate", async function () {
-            await integratedContract.createCrate([1, 2, 3]);
-            const crate = await integratedContract.crates(1);
+            // Function to convert Uint8Array to uint256 array
 
+            await integratedContract.createCrate([1, 2, 3]);
+            const crate =  await integratedContract.crates(1);
+            const ids = integratedContract.getItemIdsFromCrate(await integratedContract.nextCrateId)
             expect(crate.currentOwner).to.equal(owner.address);
-            expect(crate.itemIds.length).to.equal(3); // Check that 3 itemIds are set
+            expect(ids).to.equal(3); // Check that 3 itemIds are set
         });
 
         it("should deliver a crate", async function () {
@@ -68,6 +71,7 @@ describe("IntegratedContract", function () {
 
     describe("Location Management", function () {
         it("should update crate location", async function () {
+
             // Create a crate before delivering to ensure it's still open
             await integratedContract.createCrate([1, 2, 3]); // Ensure crate is open
             await integratedContract.updateLocation(2, "12.3456", "78.9101"); // Update location
@@ -80,14 +84,20 @@ describe("IntegratedContract", function () {
     });
 
     describe("Financial Management", function () {
-        it("should allow the owner to withdraw funds", async function () {
-            // Assuming there's some funds to withdraw, we can simulate adding funds first
-            await integratedContract.placeOrder(1, { value: ethers.parseEther("1.0") }); // Place an order to fund contract
-            const initialBalance = await ethers.provider.getBalance(owner.address);
-            await integratedContract.withdraw();
-            const finalBalance = await ethers.provider.getBalance(owner.address);
+    it("should allow the owner to withdraw funds", async function () {
+        await integratedContract.createProduct("Product A", "Category A", "image_url", ethers.parseEther("1.0"), 5);
+        // Ensure stock is available
+        await integratedContract.addStock(2, 1); // Make sure there's stock
+        await integratedContract.placeOrder(4, { value: ethers.parseEther("1.0") }); // Place an order
 
-            expect(finalBalance).to.be.above(initialBalance); // Check if the owner's balance increased
-        });
+        const initialBalance = await ethers.provider.getBalance(owner.address);
+        await integratedContract.withdraw();
+        const finalBalance = await ethers.provider.getBalance(owner.address);
+
+        expect(finalBalance).to.be.above(initialBalance); // Check if the owner's balance increased
     });
 });
+
+});
+
+
