@@ -36,7 +36,7 @@ describe("IntegratedContract", function () {
     describe("Order Management", function () {
         it("should place an order", async function () {
             await integratedContract.addStock(1, 1); // Ensure there's stock to sell
-            await integratedContract.placeOrder(1, { value: ethers.parseEther("1.0") });
+            await integratedContract.placeOrder(1, { value: ethers.parseEther("1.0") }); //at the place of 1.0 ether value to be placed
 
             const order = await integratedContract.orders(1);
             expect(order.buyer).to.equal(owner.address);
