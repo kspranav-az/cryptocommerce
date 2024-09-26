@@ -132,10 +132,17 @@ contract IntegratedContract {
         nextCrateId++;
     }
 
-    function getItemIdsFromCrate(uint256 _crateId) public view returns (uint256[] memory) {
+    function getItemIdsnum(uint256 _crateId) public view returns (uint256) {
+        require(crates[_crateId].crateId !=0 , "Crate does not exist");
+        return (crates[_crateId]).itemIds.length;
+    }
+
+
+    function getItemId(uint256 _crateId , uint256 idx) public view returns (uint256){
     //require(crates[_crateId] , "Crate does not exist");
-    return crates[_crateId].itemIds;
-}
+    return crates[_crateId].itemIds[idx];
+    }
+
 
     function deliverCrate(uint256 _crateId) public onlyOwner {
         require(crates[_crateId].crateId == _crateId, "Crate does not exist");
