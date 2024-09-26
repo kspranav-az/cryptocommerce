@@ -112,29 +112,19 @@ function PurchaseSection() {
         <div className="h-[100%] w-[50%] border-2 flex flex-col items-start p-20 pl-30 gap-10 justify-start bg-mainbackground">
           <div className="h-[75%] w-[85%]  rounded-md overflow-auto">
             {crates.map((crate, index) => (
-              //   <div
-              //     key={index}
-              //     onClick={() => selectCrate(index)}
-              //     className="flex gap-3 items-center justify-between border-2 p-3 mb-2 rounded-md bg-white text-purple-500 cursor-pointer"
-              //   >
-              //     <h1>Crate {index + 1}</h1>
-              //     <h1>ProductID: {crate.productID}</h1>
-              //     <h1>RFID: {crate.rfid}</h1>
-              //   </div>
-
               <div
                 key={index}
                 onClick={() => selectCrate(index)}
-                className="w-64 h-64 flex flex-col justify-center align-top"
+                className="h-max-30 w-auto flex flex-col justify-center align-top"
               >
                 <img
                   src="static/img/crate.png"
                   alt="CrateImg"
-                  className="object-cover"
+                  className="w-10 h-10"
                 />
-                <h1 className="">Crate {index + 1}</h1>
-                <h1 className="">PID:{crate.productID}</h1>
-                <h1 className="">RFID:{crate.rfid}</h1>
+                <h1 className="text-sm">Crate {index + 1}</h1>
+                <h1 className="text-sm">PID:{crate.productID}</h1>
+                <h1 className="text-sm">RFID:{crate.rfid}</h1>
               </div>
             ))}
           </div>
