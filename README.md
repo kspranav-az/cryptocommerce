@@ -1,6 +1,4 @@
-Here's an updated version of the `README.md` with additional information about running the Node.js server and the `NodeMCU_Scripts` directory containing scripts for the RFID scanner and ultrasonic sensor:
 
----
 
 # CryptoCommerce: A Blockchain-Based E-Commerce and Supply Chain Management Platform
 
